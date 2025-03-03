@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Postagem {{post.id}} {% endblock title %}
+
+{% block titulo %} {{post.titulo}} {% endblock titulo %}
+
+{% block conteudo %}
+
+    {{post.conteudo}}
+    
+    <hr>
+    <form method="POST">
+        {% csrf_token %}
+        <h4 style="color: red;">
+            <b>Deseja realmente deletar a postagem {{post.id}}?</b>
+        </h4>
+        <p>
+            <input class="btn btn-success" type="submit" value="Sim">
+            <a href="{% url 'blog' %}" class="btn btn-secondary">Não</a>
+        </p>    
+    </form>
+
+{% endblock conteudo %}

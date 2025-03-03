@@ -1,0 +1,44 @@
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #4CAF50; /* Cor de fundo do cabeçalho */
+    color: white; /* Cor do texto do cabeçalho */
+}
+
+tr:hover {
+    background-color: #f1f1f1; /* Cor de fundo ao passar o mouse */
+}
+
+td {
+    color: #555; /* Cor do texto das células */
+}
+
+.empty-message {
+    text-align: center;
+    color: #999; /* Cor do texto da mensagem de "nenhuma notificação" */
+    font-style: italic;
+}

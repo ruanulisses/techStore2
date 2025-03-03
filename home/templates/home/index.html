@@ -1,0 +1,58 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'pastaTs/css/login.css' %}">
+</head>
+<body>
+    <!-- ============================ CONTEUDO PRINCIPAL ==================================================-->   
+        <!-- <img class="imagem_" src="{% static 'pastaTs\img\360_F_116403790_3NkmuJkUSRIqGMpq8kNP2KbvI33lrrQk (1)-cha.jpg' %}" alt=""> -->
+
+        <div class="container">
+            <div class="login-center">
+
+                <div class="itens_bem-vindo">
+                    <h1>Bem-vindo a TS Rações</h1>
+                    <img src="{% static 'pastaTs/img/image_fx___2_-removebg-preview.png' %}" alt="">
+                </div>
+                <form id="login-form" method="POST" action="{% url 'login_usuario' %}">
+                    {% csrf_token %}
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="email"><br><br>
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" name="senha"><br><br>
+                    <div class="btns_login">
+                        <input type="submit" value="Entrar">
+                        <a href="{% url 'cadastrar_usuario' %}">
+                            <label for="bi bi-person-add">Cadastrar</label>
+                            <i class="bi bi-person-add"></i>
+                            
+                        </a>
+                        
+                    </div>
+                    <p id="error-message">  
+                        {% if messages %}
+                            <div class="messages">
+                                {% for message in messages %}
+                                    <p class="{{ message.tags }}">{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </p>
+                    <a class="btns_login" href="{% url 'produtos_list' %}">Entrar como visitante</a>
+                </form>
+                
+            </div>
+            
+        </div>
+    <!-- ============================ CONTEUDO PRINCIPAL ==================================================-->   
+
+    {% comment %} <script src="{% static  'pastaTS/js/login.js' %}"></script> {% endcomment %}
+</body>
+</html>

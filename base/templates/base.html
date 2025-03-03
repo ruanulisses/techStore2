@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+
+<head>
+    {% include 'modulos/head.html' %}
+    {% comment %} <title>{% block title %}{% endblock title %}</title> {% endcomment %}
+</head>
+
+<body>
+    {% include 'modulos/nav.html' %}
+    
+    <div style="margin-left: 10px;">
+        <h1>{% block titulo %}{% endblock titulo %}</h1>
+
+        {% include "modulos/mensagens.html" %}
+
+        {% block conteudo %}{% endblock conteudo %}
+        {% include 'modulos/footer.html' %}
+
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>

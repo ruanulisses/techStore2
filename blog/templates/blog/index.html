@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<style>
+   
+</style>
+<!-- ==================================== barra de pesquisa ======================================== -->
+    <hr>
+    <header class="navbar navbar-light bg-light" id="nav_index">
+        <form class="form-inline m-1" id="pesquisar">
+            <input class="form-control mr-sm-2" type="search" name="pesq" placeholder="Pesquisar" aria-label="Pesquisar">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Pesquisar</button>
+        </form>
+        <a class="btn" id="btn_cadastra" href="{% url 'add_produtos' %}">Cadastrar</a>
+    </header>
+    <hr>
+<!-- ==================================== final da barra de pesquisa ======================================== -->
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-4 g-4 p-1">
+        {% for post in produtos %}
+        <div class="col">
+            <div class="card shadow-sm" id="produto">
+                {% if post.imagem %}
+                    <img src="{{post.imagem.url}}" class="card-img-top" alt="{{ post.nome }}">
+                {% else %}
+                    <img src="{% static 'img/sem_imagem.jpg' %}" class="card-img-top" alt="Imagem não disponível">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">Nome: {{ post.nome }}</h5>
+                    <h5 class="card-title">Preço: {{ post.preco }}</h5>
+                    <h5 class="card-title">Preço Comprado: {{ post.preco_comprado }}</h5>
+                    <h5 class="card-title">Qtd estoque: {{ post.estoque }}</h5>
+                    <h5 class="card-title">data Cad.: {{ post.data |date:"d/m/y H:id" }}</h5>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'produtos' post.id %}" class="btn btn-primary">Acessar</a>
+                        <a href="{% url 'edit_postagem' post.id %}" class="btn btn-secondary">Editar</a>
+                        <a href="{% url 'del_postagem' post.id %}" class="btn btn-danger">Deletar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock conteudo %}

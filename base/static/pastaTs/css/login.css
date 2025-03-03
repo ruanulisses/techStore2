@@ -1,0 +1,159 @@
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto";
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+    background-color: #17251e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.container {
+    background-color: black;
+    width: 900px;
+    height: 500px;
+    padding: 50px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px #0ca55b ;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center ;
+    justify-content: center;
+    position: absolute;
+
+
+}
+.container:hover{
+    box-shadow: 0 0 100px #0ca55b ;
+    transition: 1s;
+}
+.container label{
+    color: white;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    margin-left: 15%;
+}
+
+input[type="text"], input[type="password"] {
+    width: 75%;
+    height: 30px;
+    margin-bottom: 20px;
+    margin-left: 15%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+   
+}
+
+input[type="submit"] {
+    padding: 10px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #0ca55b ;
+    border: 0;
+    border-radius: 30px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+input[type="submit"]:hover{
+    box-shadow: 0px 0px 8px #0ca55b;
+}
+
+
+#error-message {
+    color: red; 
+    margin-top: 10px;
+}
+
+
+.btns_login{
+    display: flex;
+    width: 300px;
+    margin-left: 15%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    color: white;
+
+    text-decoration: none;
+}
+
+.btns_login a{
+    text-decoration: none;  
+    color: #ddd;
+    gap: 10px;
+    cursor: pointer;
+    display: flex;
+    padding: 10px 10px;
+    justify-content: center;
+    align-items: center;
+}
+.btns_login label{
+    display: flex ; 
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 20px;
+
+}
+
+.btns_login i{
+    font-size: 20px;
+    display: flex;
+
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.988);
+    width: 400px;
+    height: auto;
+    background-color: #17251e;
+    border-radius: 0 20px 20px 0;
+
+}
+.login-center{
+    display: flex;
+    justify-content: space-between;
+    background-color:#0ca55b;
+    width: 900px;
+    height: 500px;
+    border-radius: 20px;
+}
+.itens_bem-vindo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -40px;    
+}
+.itens_bem-vindo h1{
+    margin-top: 100px;
+}
+.itens_bem-vindo img{
+    margin-top: -100px;
+}

@@ -1,0 +1,181 @@
+nav.menu_lateral {
+    width: 80px;
+    height: 100%;
+    background-color: #ffffff;
+    padding: 40px 0 40px 1%;
+    box-shadow: 3px 0 0  #0ca55b;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    transition: .5s;
+    z-index: 999;
+  }
+  .txt_link{
+    font-size: 15px;
+  }
+
+  nav.menu_lateral.expandir{
+    width: 300px;
+  }
+  
+  .btn_expandir{
+    width: 100%;
+    padding-left: 05px;
+  }
+  .btn_expandir > i{
+    color:  rgb(0, 0, 0);
+    font-size: 24px;
+    cursor: pointer;
+    
+  }
+  
+  
+  ul{
+    height: 100%;
+    list-style-type: none;     
+    
+  }
+  ul li.item_menu{
+    transition: .8s ;
+    margin-left: -30px;
+  
+  }
+  
+  ul li.ativo{
+    background-color: #0ca55b ;
+  }
+  
+  
+  ul li.item_menu:hover{
+    background-color:#0ca55b;
+    border-radius: 50px;    
+    
+  
+  }
+  ul li.item_menu a{
+    height: 55px;
+    color: #000000;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 10px 2%;
+    display: flex;
+    margin-bottom:  20px;   
+    line-height: 40px;
+    border-radius: 50px ;
+  }
+  ul li.item_menu a .txt_link{
+    margin-left: 70px;
+    transition: 1s;
+    opacity: 0;
+  }
+  nav.menu_lateral.expandir .txt_link{
+    margin-left: 20px;
+    opacity: 1;
+  
+  }
+  
+  ul li.item_menu a .icones > i{
+    font: 30px;
+    margin-left: 15px;
+  }
+  ul li.item_menu a .icones > i:hover{
+    background-color: #0ca55b;
+  }
+  
+  ul li ul.dropdown li{
+    display: block;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    transition:  1s ;
+    
+  }
+  
+  ul li ul.dropdown{
+    width: 60px;
+    height: 90px;
+    position: absolute;
+    z-index: 9;
+    display: none;
+    transition:  1s;
+
+  }
+  
+  nav.menu_lateral.expandir ul li ul.dropdown {
+    width: 264px;
+    height: 40px;
+    
+  }
+  ul li a:hover{
+    background-color: #0ca55b;
+
+  }
+  
+
+
+  
+  ul li:hover ul.dropdown{
+    display: block;
+  }
+
+  .btn-container{
+    margin-left: 5px;
+
+
+  }
+  /* =================== BTN DARK MODE ================*/
+.theme {
+  --bg-color: ;
+  --main-color: #000;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  background-color: var(--bg-color);
+  border-radius: 100%;
+  border: 2px solid var(--main-color);
+}
+
+.input {
+  cursor: pointer;
+  position: a bsolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  opacity: 0;
+}
+
+.icon {
+  position: absolute;
+  top: calc(50% -13px);
+  left: calc(50% -13px);
+  width: 26px;
+  height: 26px;
+}
+
+.icon.icon-moon {
+  fill: var(--main-color);
+  display: none;
+}
+
+.icon.icon-sun {
+  stroke: var(--main-color);
+  
+}
+
+.input:checked ~ .icon.icon-sun {
+  display: none;
+}
+
+.input:checked ~ .icon.icon-moon {
+  display: block;
+}
+
+.theme:active {
+  box-shadow: 0px 0px var(--main-color);
+  transform: translate(3px, 3px);
+}
+/*=========================== FINAL BTN DARK MODE ===================================*/

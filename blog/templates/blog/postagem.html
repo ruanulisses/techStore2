@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Postagem {{post.id}} {% endblock title %}
+
+{% block titulo %} {{post.titulo}} {% endblock titulo %}
+
+{% block conteudo %}
+       
+    <p>
+        {% if post.imagem %}
+            <img src="{{post.imagem.url}}" width="300px" heigth="200px">
+        {% else %}
+            <img src="{% static 'img/sem_imagem.jpg' %}" width="200px" heigth="100px">
+        {% endif %}
+    </p>
+    {{post.conteudo}}
+    <hr>
+    <p>
+        <a href="{% url 'blog' %}" class="btn btn-secondary">Voltar</a>
+    </p>
+
+{% endblock conteudo %}

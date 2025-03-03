@@ -1,0 +1,86 @@
+{% extends 'baseTS.html' %}
+
+{% load static %}
+
+<!-- {% block conteudo %} -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras</title>
+    <link rel="stylesheet" href="{% static 'pastaTs/css/carrinho.css' %}">
+</head>
+
+<body>
+    <h1>Carrinho de Compras</h1>
+    <div class="container">
+        <
+        <table>
+            <thead>
+                <tr>
+                    <th>Imagem</th>
+                    <th>ID do Produto</th>
+                    <th>Nome do Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Subtotal</th>
+                    <th>Data Adicionado</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in itens %}
+                <tr>
+                    <td>
+                        {% if item.produto.imagem %}
+                            <img src="{{ item.produto.imagem.url }}" alt="{{ item.produto.nome }}" style="width: 50px; height: auto;">
+                        {% else %}
+                            <img src="{% static 'img/sem_imagem.jpg' %}" alt="Imagem não disponível" style="width: 50px; height: auto;">
+                        {% endif %}
+                    </td>
+                    <td>{{ item.produto.id }}</td>
+                    <td>{{ item.produto.nome }}</td>
+                    <td>{{ item.quantidade }}</td>
+                    <td>R$ {{ item.produto.preco|floatformat:2 }}</td>
+                    <td>R$ {{ item.produto.preco|floatformat:2|add:item.quantidade|floatformat:2 }}</td>
+                    <td>{{ item.data_adicionado }}</td>
+                    <td>
+                        <form action="{% url 'remover_item' item.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-remover">Remover</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total">
+            <h3>Total do Carrinho: R$ {{ total|floatformat:2 }}</h3>
+        </div>
+
+        <div class="bnt_carrinhos">
+
+        <a href="{% url 'home' %}" class='btn-continue'>Continuar Comprando</a>
+
+            <!-- Formulário para Finalizar Compra -->
+            <form action="{% url 'finalizar_compra' %}" method="post" id="finalizar-form">
+                {% csrf_token %}
+                <button type="submit" class='btn-finalizar'>Finalizar Compra</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("/conta/")
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector(".carrinho").innerHTML = data;
+                })
+                .catch(error => console.error("Erro ao carregar o carrinho:", error));
+        });
+    </script>
+</body>
+</html>
+<!-- {% endblock conteudo %} -->

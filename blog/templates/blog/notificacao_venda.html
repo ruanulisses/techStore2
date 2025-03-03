@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificações</title>
+    <link rel="stylesheet" href="{% static 'css/notificacies.css' %}">  <!-- Adicione seu CSS aqui -->
+</head>
+<body>
+    <div class="container">
+        <h1>Notificações de Compras</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for notificacao in notificacoes %}
+                <tr>
+                    <td>{{ notificacao.usuario.username }}</td>
+                    <td>{{ notificacao.produto }}</td>
+                    <td>{{ notificacao.quantidade }}</td>
+                    <td>{{ notificacao.data }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Nenhuma notificação encontrada.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Botão para finalizar compras -->
+        <form action="{% url 'finalizar_compras' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-finalizar">Finalizar Compras</button>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock conteudo %}

@@ -1,0 +1,97 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Cor de fundo suave */
+    color: #333; /* Cor do texto */
+}
+
+/* Estilos da barra de pesquisa */
+#nav_index {
+    width: 80%;
+    margin: auto;
+    border-bottom: 1px solid #ddd; /* Linha inferior */
+}
+
+#pesquisar {
+    
+    width: 500px;
+    display: flex;
+}
+
+#btn_cadastra {
+    margin-left: 20px; /* Espaçamento à esquerda do botão de cadastrar */
+    text-decoration: none; /* Remove o sublinhado */
+    color: #007bff; /* Cor do texto */
+    font-weight: bold; /* Negrito */
+}
+
+#btn_cadastra:hover {
+    text-decoration: underline; /* Sublinha ao passar o mouse */
+}
+
+/* Estilos dos cards */
+.card {
+    border: none; /* Remove a borda padrão */
+    border-radius: 10px; /* Bordas arredondadas */
+    overflow: hidden; /* Esconde partes que saem do card */
+    transition: transform 0.3s, box-shadow 0.3s; /* Transição suave */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Eleva o card ao passar o mouse */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra ao passar o mouse */
+}
+
+/* Estilos da imagem do card */
+.card-img-top {
+    width: 100%; /* Largura total do card */
+    height: 200px; /* Altura fixa */
+    object-fit: cover; /* Cobre o espaço do card sem distorção */
+}
+
+/* Estilos do corpo do card */
+.card-body {
+    background-color: #ffffff; /* Cor de fundo do corpo do card */
+    padding: 15px; /* Espaçamento interno */
+}
+
+/* Estilos dos títulos */
+.card-title {
+    font-size: 16px; /* Tamanho da fonte */
+    margin-bottom: 10px; /* Espaçamento inferior */
+    color: #333; /* Cor do texto */
+}
+
+/* Estilos dos botões */
+.btn {
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 10px 15px; /* Espaçamento interno */
+    font-size: 14px; /* Tamanho da fonte */
+    transition: background-color 0.3s; /* Transição suave */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Cor do botão primário */
+    color: white; /* Cor do texto */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Cor ao passar o mouse */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Cor do botão secundário */
+    color: white; /* Cor do texto */
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Cor ao passar o mouse */
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Cor do botão de deletar */
+    color: white; /* Cor do texto */
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Cor ao passar o mouse */
+}

@@ -1,0 +1,138 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto";
+  }
+  
+  html::-webkit-scrollbar{
+    width: 1px;
+  }
+  html::-webkit-scrollbar-track{
+    background: transparent;
+  }
+  html::-webkit-scrollbar-thumb{
+    background-color: #fff;
+    border-radius: 5rem;
+  
+  }
+  
+  
+  
+
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+
+  .container {
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin: auto;
+}
+
+thead {
+    background-color: #007bff;
+    color: white;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background-color:#28a745;
+}
+
+.product-image {
+    width: 80px; /* Tamanho da imagem */
+    height: auto;
+    border-radius: 4px;
+}
+
+.btn-continue {
+
+  height: 45px;;
+  padding: 12px 25px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s;
+  text-align: center;
+   
+}
+.bnt_carrinhos{
+  width: 500px;
+  height: 70px;
+  margin-top: 40px;
+  margin-left: 400px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.btn-continue:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+.btn-finalizar {
+   
+   
+    padding: 12px 25px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+   
+}
+
+.btn-finalizar:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+
+.total{
+  margin-left: 220px;
+  margin-top: 10px;
+}
+
+.btn-remover {
+  background-color: #dc3545; /* Cor vermelha */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-remover:hover {
+  background-color: #c82333; /* Cor vermelha mais escura ao passar o mouse */
+}

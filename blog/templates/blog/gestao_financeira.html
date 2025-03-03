@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Financeira</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Gestão Financeira</h1>
+        
+        <h2 class="mt-4">Resumo Financeiro</h2>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total de Vendas</td>
+                    <td id="resumoVendas">R$ {{ total_vendas|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>Total de Despesas</td>
+                    <td id="resumoDespesas">R$ {{ total_despesas|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>Lucro</td>
+                    <td id="resumoLucro">R$ {{ total_lucro|floatformat:2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2 class="mt-4">Gráfico Financeiro</h2>
+        <canvas id="financeChart"></canvas>
+
+        <hr>
+        <h2 class="mt-4">Histórico Financeiro</h2>
+        <table class="table table-striped mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Mês</th>
+                    <th>Vendas</th>
+                    <th>Despesas</th>
+                    <th>Lucro</th>
+                </tr>
+            </thead>
+            <tbody id="historicoFinanceiro">
+                {% for registro in registros %}
+                <tr>
+                    <td>{{ registro.mes }}</td>
+                    <td>R$ {{ registro.vendas|floatformat:2 }}</td>
+                    <td>R$ {{ registro.despesas|floatformat:2 }}</td>
+                    <td>R$ {{ registro.lucro|floatformat:2 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Nenhum registro encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Gráfico Financeiro
+        const ctx = document.getElementById('financeChart').getContext('2d');
+        const financeChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Vendas', 'Despesas', 'Lucro'],
+                datasets: [{
+                    label: 'Valores em R$',
+                    data: [{{ total_vendas }}, {{ total_despesas }}, {{ total_lucro }}],
+                    backgroundColor: ['blue', 'red', 'green']
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
+{% endblock conteudo %}

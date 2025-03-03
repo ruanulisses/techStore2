@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Produto{% endblock title %}
+
+{% block titulo %}Editar Produtos {{prod.id}}{% endblock titulo %}
+<style>
+    
+
+    h2 {
+        color: #007bff; /* Azul para o título */
+    }
+
+    .form-control, .form-control-file {
+        border: 1px solid #ced4da; /* Borda cinza clara para os campos de entrada */
+        border-radius: 0.25rem; /* Bordas arredondadas */
+    }
+
+    .form-control:focus {
+        border-color: #007bff; /* Borda azul ao focar */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra ao focar */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Azul para o botão */
+        border: none; /* Remove a borda padrão */
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Efeito hover mais escuro */
+    }
+</style>
+
+{% block conteudo %}
+
+<div class="container mt-5">
+    <form method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
+        {% csrf_token %}
+
+
+        <div class="form-group">
+            <label for="imagem">Imagem:</label>
+            <input type="file" name="imagem" class="form-control-file"  value="{{prod.imagem}}">
+        </div>
+
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" class="form-control"  value="{{prod.nome}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="preco">Preço:</label>
+            <input type="text" id="preco" name="preco" class="form-control"  value="{{prod.preco}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descricao">Descrição:</label>
+            <textarea style="resize: none;" cols="40" rows="5" name="descricao" class="form-control"  value="{{prod.descricao}}" required></textarea>
+        </div>
+
+        <div class="form-group"> 
+            <label for="estoque">Estoque:</label>
+            <input type="number" id="estoque" name="estoque" class="form-control"  value="{{prod.estoque}}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tipo">Atacado ou Varejo?</label>
+            <select id="tipo" name="tipo" class="form-control" value="{{prod.tipo}}"  required>
+                <option value="" disabled selected>Selecione uma opção</option>
+                <option value="atacado">Atacado</option>
+                <option value="varejo">Varejo</option>
+            </select>
+        </div>
+
+
+    <!-- 
+        <p><label for="tit">Nome:</label></p>
+        <p><input type="text" id='nome' name='nome'></p>
+
+        <p><label>Preço:</label></p>
+        <p><input type="text" id='preco' name='preco' value={{prod.preco}}></p>
+
+        <p><label for="tit">Descrição:</label></p>
+        <p><textarea style="resize: none;" cols="40" rows="5"
+                name="cont">{{prod.descricao}}</textarea>
+        </p>    <p><label>Estoque:</label></p>
+
+        <p><input type="number" id='estoque' name='estoque' value={{prod.estoque}}></p>
+
+
+        -->
+        <p>
+            <input class="btn btn-primary" type="submit">
+            <a href="{% url 'blog' %}">
+                <input class="btn btn-secondary" type="button" value="Voltar"> 
+            </a>      
+        </p>
+    </form>
+</div>
+{% endblock conteudo %}
