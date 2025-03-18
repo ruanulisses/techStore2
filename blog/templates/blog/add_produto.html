@@ -28,7 +28,29 @@
 </style>
 {% block conteudo %}
 <div class="container mt-5">
+    
     <h2 class="text-center mb-4">Adicionar Novo produto</h2>
+    {% if messages %}
+        <div class="container mt-3">
+            {% for msg in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <script>
+            // Função para ocultar os alertas após um certo tempo
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 5000); // 5000 milissegundos = 5 segundos
+        </script>
+    {% endif %}
+
+
     <form method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
         {% csrf_token %}
         
@@ -39,16 +61,16 @@
 
         <div class="form-group">
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" class="form-control" required>
+            <input type="text" id="nome" name="nome" class="form-control" minlength="10" required>
         </div>
 
         <div class="form-group">
-            <label for="preco">Preço:</label>
+            <label for="preco">Preço venda:</label>
             <input type="text" id="preco" name="preco" class="form-control" required>
         </div>
 
         <div class="form-group">
-            <label for="preco">Preço comprado:</label>
+            <label for="preco">Preço de custo:</label>
             <input type="text" id="preco" name="preco_comprado" class="form-control" required>
         </div>
 
@@ -58,7 +80,7 @@
         </div>
 
         <div class="form-group">
-            <label for="estoque">Estoque:</label>
+            <label for="estoque">Quantidade:</label>
             <input type="number" id="estoque" name="estoque" class="form-control" required>
         </div>
 

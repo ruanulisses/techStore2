@@ -32,13 +32,13 @@
             </a>
         </li>
         <li class="item_menu">
-            <a href="{% url 'conta' %}">
-                <span class="icones"><i class="bi bi-person"></i></span>
-                <span class="txt_link">CONTA </span>
+            <a href="{% url 'carrinho' %}">
+                <span class="icones"><i class="bi bi-cart"></i></span>
+                <span class="txt_link">CARRINHO </span>
             </a>
         </li>
         <li class="item_menu">
-            <a href="contatos.html">
+            <a href="{% url "contatos" %}">
                 <span class="icones"><i class="bi bi-chat-left-dots"></i> </span>
                 <span class="txt_link">CONTATO </span>
             </a>
@@ -54,132 +54,122 @@
 </nav>
 
 <style>
-    nav.menu_lateral {
-     width: 70px;
-     height: 100%;
-     background-color: #ffffff;
-     padding: 40px 0 40px 1%;
-     box-shadow: 3px 0 0  #0ca55b;
-     position: fixed;
-     top: 0;
-     left: 0;
-     overflow: hidden;
-     transition: .5s;
-     z-index: 999;
-   }
-   .txt_link{
-     font-size: 15px;
-   }
- 
-   nav.menu_lateral.expandir{
-     width: 280px;
-   }
-   
-   .btn_expandir{
-     width: 100%;
-     padding-left: 05px;
-   }
-   .btn_expandir > i{
-     color:  rgb(0, 0, 0);
-     font-size: 24px;
-     cursor: pointer;
-     
-   }
-   
-   
-   ul{
-     height: 100%;
-     list-style-type: none;     
-     
-   }
-   ul li.item_menu{
-     transition: .8s ;
-     margin-left: -8px;
-   
-   }
-   
-   ul li.ativo{
-     background-color: #0ca55b ;
-   }
-   
-   
-   ul li.item_menu:hover{
-     background-color:#0ca55b;
-     border-radius: 50px;    
-     
-   
-   }
-   ul li.item_menu a{
-     height: 55px;
-     color: #000000;
-     text-decoration: none;
-     font-size: 20px;
-     padding: 10px 2%;
-     display: flex;
-     margin-bottom:  20px;   
-     line-height: 40px;
-     border-radius: 50px ;
-   }
-   ul li.item_menu a .txt_link{
-     margin-left: 70px;
-     transition: 1s;
-     opacity: 0;
-   }
-   nav.menu_lateral.expandir .txt_link{
-     margin-left: 20px;
-     opacity: 1;
-   
-   }
-   
-   ul li.item_menu a .icones > i{
-     font: 30px;
-     margin-left: 15px;
-   }
-   ul li.item_menu a .icones > i:hover{
-     background-color: #0ca55b;
-   }
-   
-   ul li ul.dropdown li{
-     display: block;
-     display: flex;
-     justify-content: center;
-     margin-top: 15px;
-     transition:  1s ;
-     
-   }
-   
-   ul li ul.dropdown{
-     width: 60px;
-     height: 90px;
-     position: absolute;
-     z-index: 9;
-     display: none;
-     transition:  1s;
- 
-   }
-   
-   nav.menu_lateral.expandir ul li ul.dropdown {
-     width: 264px;
-     height: 40px;
-     
-   }
-   ul li a:hover{
-     background-color: #0ca55b;
- 
-   }
-   
- 
- 
-   
-   ul li:hover ul.dropdown{
-     display: block;
-   }
- 
-   .btn-container{
-     margin-left: 5px;
- 
- 
-   }
+  /*========================================== MENU =======================================================*/
+  nav.menu_lateral {
+  width: 70px;
+  height: 100%;
+  background-color: #ffffff;
+  padding: 40px 0 40px 1%;
+  box-shadow: 3px 0 0  #0ca55b;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transition: .5s;
+  z-index: 3;
+  }
+  
+  nav.menu_lateral.expandir{
+  width: 280px;
+  }
+  
+  .btn_expandir{
+  width: 100%;
+  padding-left: 05px;
+  }
+  .btn_expandir > i{
+  color:  rgb(0, 0, 0);
+  font-size: 24px;
+  cursor: pointer;
+  
+  }
+  
+  
+  ul{
+  height: 100%;
+  list-style-type: none;     
+  
+  }
+  ul li.item_menu{
+  transition: .8s ;
+  
+  }
+  
+  ul li.ativo{
+  background-color: #0ca55b ;
+  }
+  
+  
+  ul li.item_menu:hover{
+  background-color:#0ca55b;
+  border-radius: 50px;    
+  
+  
+  }
+  ul li.item_menu a{
+  height: 55px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 10px 2%;
+  display: flex;
+  margin-bottom:  20px;   
+  line-height: 40px;
+  border-radius: 50px ;
+  }
+  ul li.item_menu a .txt_link{
+  margin-left: 70px;
+  transition: 1s;
+  opacity: 0;
+  }
+  nav.menu_lateral.expandir .txt_link{
+  margin-left: 20px;
+  opacity: 1;
+  
+  }
+  
+  ul li.item_menu a .icones > i{
+  font: 30px;
+  margin-left: 15px;
+  }
+  
+  ul li ul.dropdown li{
+  display: block;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  transition:  1s ;
+  
+  }
+  
+  ul li ul.dropdown{
+  width: 60px;
+  height: 90px;
+  position: absolute;
+  z-index: 9;
+  display: none;
+  transition:  1s;
+  
+  }
+  
+  nav.menu_lateral.expandir ul li ul.dropdown {
+  width: 264px;
+  height: 40px;
+  margin-left: 80px;
+  }
+  ul li a:hover{
+  background-color: #0ca55b;
+  }
+  ul li:hover ul.dropdown{
+  display: block;
+  }
+  
+  .btn-container{
+  margin-left: 8px;
+  
+  }
+  /*========================================== FINAL MENU =======================================================*/
+  
    /* =================== BTN DARK MODE ================*/
  .theme {
    --bg-color: ;

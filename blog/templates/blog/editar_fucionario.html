@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<style>
+    /* Adicione estilos personalizados aqui, se necessário */
+</style>
+
+<div class="container">
+    <h1>Editar Funcionário</h1>
+    <form method="POST" enctype="multipart/form-data" action="{% url 'editar_funcionario' funcionario.id %}">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="id_nome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="id_nome" name="nome" value="{{ funcionario.nome }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_sobrenome" class="form-label">Sobrenome</label>
+            <input type="text" class="form-control" id="id_sobrenome" name="sobrenome" value="{{ funcionario.sobrenome }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_email" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="id_email" name="email" value="{{ funcionario.email }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_telefone" class="form-label">Telefone</label>
+            <input type="text" class="form-control" id="id_telefone" name="telefone" value="{{ funcionario.telefone }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_cargo" class="form-label">Cargo</label>
+            <input type="text" class="form-control" id="id_cargo" name="cargo" value="{{ funcionario.cargo }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_data_nascimento" class="form-label">Data de Nascimento</label>
+            <input type="date" class="form-control" id="id_data_nascimento" name="data_nascimento" value="{{ funcionario.data_nascimento }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_endereco" class="form-label">Endereço</label>
+            <input type="text" class="form-control" id="id_endereco" name="endereco" value="{{ funcionario.endereco }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_cpf" class="form-label">CPF</label>
+            <input type="text" class="form-control" id="id_cpf" name="cpf" value="{{ funcionario.cpf }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_rg" class="form-label">RG</label>
+            <input type="text" class="form-control" id="id_rg" name="rg" value="{{ funcionario.rg }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_data_admissao" class="form-label">Data de Admissão</label>
+            <input type="date" class="form-control" id="id_data_admissao" name="data_admissao" value="{{ funcionario.data_admissao }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_salario" class="form-label">Salário</label>
+            <input type="number" class="form-control" id="id_salario" name="salario" step="0.01" value="{{ funcionario.salario }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_departamento" class="form-label">Departamento</label>
+            <input type="text" class="form-control" id="id_departamento" name="departamento" value="{{ funcionario.departamento }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_estado_civil" class="form-label">Estado Civil</label>
+            <input type="text" class="form-control" id="id_estado_civil" name="estado_civil" value="{{ funcionario.estado_civil }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="id_data_pagamento" class="form-label">Data de Pagamento</label>
+            <input type="date" class="form-control" id="id_data_pagamento" name="data_pagamento" value="{{ funcionario.data_pagamento }}">
+        </div>
+        <div class="mb-3">
+            <label for="id_senha" class="form-label">Senha</label>
+            <input type="password" class="form-control" id="id_senha" name="senha" placeholder="Digite uma nova senha (deixe em branco para manter a atual)">
+        </div>
+        <div class="mb-3">
+            <label for="id_imagem" class="form-label">Imagem</label>
+            <input type="file" class="form-control" id="id_imagem" name="imagem">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+</div>
+{% endblock conteudo %}

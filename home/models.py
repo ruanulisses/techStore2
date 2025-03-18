@@ -14,6 +14,7 @@ class Usuario(models.Model):
     idade = models.IntegerField()
     senha = models.CharField(max_length=255)
     data = models.DateTimeField(default=now)
+    is_active = models.BooleanField(default=True) 
 
     def __str__(self):
         return self.nome

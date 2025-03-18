@@ -1,0 +1,139 @@
+{% extends 'baseTS.html' %}
+
+{% block conteudo %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Altura total da tela */
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; /* Largura máxima do formulário */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .messages {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .messages li {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .messages li.success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dados de Pagamento</h1>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form action="{% url 'processar_pagamento' %}" method="post">
+            {% csrf_token %}
+            <h2>Escolha a Forma de Pagamento</h2>
+            <div>
+                <label>
+                    <input type="radio" name="forma_pagamento" value="cartao" required>
+                    Cartão de Crédito/Débito
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="radio" name="forma_pagamento" value="boleto">
+                    Boleto
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="radio" name="forma_pagamento" value="pix">
+                    PIX
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="radio" name="forma_pagamento" value="dinheiro">
+                    Dinheiro
+                </label>
+            </div>
+            <button type="submit">Continuar</button>
+        </form>
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            {% if messages %}
+                {% for message in messages %}
+                    swal({
+                        title: "Mensagem",
+                        text: "{{ message }}",
+                        icon: "success", // ou "error" dependendo do tipo de mensagem
+                        button: "OK",
+                    });
+                {% endfor %}
+            {% endif %}
+        });
+    
+    </script>
+</body>
+
+</html>
+{% endblock conteudo %}

@@ -227,16 +227,16 @@ body.dark-mode {
   width: 88.5%; /* Largura do contêiner */
   display: flex; /* Usar flexbox para alinhar os produtos */
   flex-direction: row;
-  align-items: center;
+
   flex-wrap: wrap; /* Permitir que os itens quebrem para a próxima linha */
-  margin: auto;
+  margin-left: 120px;
   background-color: transparent;
 }
 
 /* Estilo de cada produto */
 .itens_produtos {
   width: 250px;
-  height: 330px; /* Altura automática para manter a proporção */
+  height: 350px; /* Altura automática para manter a proporção */
   display: flex; /* Usar flexbox para alinhar itens dentro do produto */
   flex-direction: column; /* Alinhar itens verticalmente */
   align-items: center;
@@ -253,7 +253,7 @@ body.dark-mode {
 
 /* Ajuste o tamanho da imagem */
 .fotos_produtos {
-  max-width: 100%; /* A imagem não deve ultrapassar a largura do contêiner */
+  max-width: 120%; /* A imagem não deve ultrapassar a largura do contêiner */
   height: auto; /* Manter a proporção da imagem */
 }
 
@@ -262,22 +262,28 @@ body.dark-mode {
   flex-direction: column;
   align-items: center;
   position: absolute;
-  margin-top: 250px;
+  margin-top: 280px;
 
 }
 /* Estilo do botão de adicionar ao carrinho */
 .add_carinho {
-  width: 130px;
+  width: 100px;
   background-color: #28a745; /* Cor de fundo verde */
   color: white; /* Cor do texto */
   border: none; /* Remover borda */
   border-radius: 5px; /* Bordas arredondadas */
   cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
   position: absolute; /* Espaçamento acima do botão */
-  margin-top: 20px;
+  margin-left: -110px;
 
 }
-
+.quantidade{
+  display: flex;
+  flex-direction: column;
+  align-items: center ;
+  position: absolute;
+  margin-left: 25px;
+}
 /* Efeitos ao passar o mouse sobre o botão */
 .add_carinho:hover {
   background-color: #218838; /* Cor de fundo mais escura ao passar o mouse */
@@ -372,7 +378,6 @@ body.dark-mode {
 }
 
 .btn_carrinho_prod{
-  margin-top: 25px;
   font-size: 28px;
 
 }
@@ -385,6 +390,7 @@ body.dark-mode {
 .btn_carrinho_prod a:hover {
   color: #ffffff; /* Cor do ícone ao passar o mouse */
 }
+
 
 /*========================================= BARRA TOP DA PAGINA ======================================================*/
 

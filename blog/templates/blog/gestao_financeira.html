@@ -15,7 +15,8 @@
 <body>
     <div class="container mt-4">
         <h1 class="text-center">Gestão Financeira</h1>
-        
+        <hr>
+
         <h2 class="mt-4">Resumo Financeiro</h2>
         <table class="table table-bordered mt-3">
             <thead>
@@ -39,36 +40,11 @@
                 </tr>
             </tbody>
         </table>
-        
-        <h2 class="mt-4">Gráfico Financeiro</h2>
-        <canvas id="financeChart"></canvas>
 
-        <hr>
-        <h2 class="mt-4">Histórico Financeiro</h2>
-        <table class="table table-striped mt-3">
-            <thead class="table-dark">
-                <tr>
-                    <th>Mês</th>
-                    <th>Vendas</th>
-                    <th>Despesas</th>
-                    <th>Lucro</th>
-                </tr>
-            </thead>
-            <tbody id="historicoFinanceiro">
-                {% for registro in registros %}
-                <tr>
-                    <td>{{ registro.mes }}</td>
-                    <td>R$ {{ registro.vendas|floatformat:2 }}</td>
-                    <td>R$ {{ registro.despesas|floatformat:2 }}</td>
-                    <td>R$ {{ registro.lucro|floatformat:2 }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4">Nenhum registro encontrado.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <h2 class="mt-4">Gráfico Financeiro</h2>
+        <canvas id="financeChart" style="max-width: 1000px; max-height: 1000px; " ></canvas>
+
+    
     </div>
 
     <script>
@@ -80,11 +56,38 @@
                 labels: ['Vendas', 'Despesas', 'Lucro'],
                 datasets: [{
                     label: 'Valores em R$',
-                    data: [{{ total_vendas }}, {{ total_despesas }}, {{ total_lucro }}],
+                    data: [{{ total_vendas }}, {{ total_lucro }} ,{{ total_despesas }}],
                     backgroundColor: ['blue', 'red', 'green']
                 }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
         });
+
+        // Função para exportar dados
+        function exportData() {
+            // Aqui você pode implementar a lógica para exportar os dados
+            // Por exemplo, redirecionar para uma URL que gera um CSV ou PDF
+           
+        }
+
+        // Lógica para filtrar dados por data
+        document.getElementById('filterForm').onsubmit = function(event) {
+            event.preventDefault(); // Impede o envio do formulário padrão
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            // Aqui você pode implementar a lógica para filtrar os dados
+            // Por exemplo, fazer uma requisição AJAX para obter os dados filtrados
+            console.log('Filtrar de', startDate, 'até', endDate);
+            // Você pode usar fetch ou XMLHttpRequest para buscar os dados filtrados
+        };
     </script>
 </body>
 </html>

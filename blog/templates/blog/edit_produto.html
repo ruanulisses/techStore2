@@ -2,7 +2,6 @@
 
 {% block title %}Edit Produto{% endblock title %}
 
-{% block titulo %}Editar Produtos {{prod.id}}{% endblock titulo %}
 <style>
     
 
@@ -30,70 +29,71 @@
     }
 </style>
 
-{% block conteudo %}
-
-<div class="container mt-5">
-    <form method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
-        {% csrf_token %}
-
-
-        <div class="form-group">
-            <label for="imagem">Imagem:</label>
-            <input type="file" name="imagem" class="form-control-file"  value="{{prod.imagem}}">
+<div style="margin-left: 200px;">
+    {% block conteudo %}
+    {% if messages %}
+        <div class="container mt-3">
+            {% for msg in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
         </div>
 
-        <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" class="form-control"  value="{{prod.nome}}" required>
-        </div>
+        <script>
+            // Função para ocultar os alertas após um certo tempo
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 4000); // 5000 milissegundos = 5 segundos
+        </script>
+    {% endif %}
 
-        <div class="form-group">
-            <label for="preco">Preço:</label>
-            <input type="text" id="preco" name="preco" class="form-control"  value="{{prod.preco}}" required>
-        </div>
+    <div class="container mt-5" >
+        <form method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
+            {% csrf_token %}
 
-        <div class="form-group">
-            <label for="descricao">Descrição:</label>
-            <textarea style="resize: none;" cols="40" rows="5" name="descricao" class="form-control"  value="{{prod.descricao}}" required></textarea>
-        </div>
+            <div class="form-group">
+                <label for="imagem">Imagem:</label>
+                {% if prod.imagem %}
+                    <img src="{{ prod.imagem.url }}" alt="Imagem do Produto" style="max-width: 200px; margin-bottom: 10px;">
+                {% endif %}
+                <input type="file" name="imagem" class="form-control-file">
+            </div>
 
-        <div class="form-group"> 
-            <label for="estoque">Estoque:</label>
-            <input type="number" id="estoque" name="estoque" class="form-control"  value="{{prod.estoque}}" required>
-        </div>
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" class="form-control" value="{{ prod.nome }}" required>
+            </div>
 
-        <div class="form-group">
-            <label for="tipo">Atacado ou Varejo?</label>
-            <select id="tipo" name="tipo" class="form-control" value="{{prod.tipo}}"  required>
-                <option value="" disabled selected>Selecione uma opção</option>
-                <option value="atacado">Atacado</option>
-                <option value="varejo">Varejo</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="preco">Preço:</label>
+                <input type="text" id="preco" name="preco" class="form-control" value="{{ prod.preco }}" required>
+            </div>
+            <div class="form-group">
+                <label for="preco_comprado">Preço comprado:</label>
+                <input type="text" id="preco_comprado" name="preco_comprado" class="form-control" value="{{ prod.preco_comprado }}" required>
+            </div>
 
+            <div class="form-group">
+                <label for="descricao">Descrição:</label>
+                <textarea style="resize: none;" cols="40" rows="5" name="descricao" class="form-control" required>{{ prod.descricao }}</textarea>
+            </div>
 
-    <!-- 
-        <p><label for="tit">Nome:</label></p>
-        <p><input type="text" id='nome' name='nome'></p>
+            <div class="form-group"> 
+                <label for="estoque">Estoque:</label>
+                <input type="number" id="estoque" name="estoque" class="form-control" value="{{ prod.estoque }}" required>
+            </div>
 
-        <p><label>Preço:</label></p>
-        <p><input type="text" id='preco' name='preco' value={{prod.preco}}></p>
-
-        <p><label for="tit">Descrição:</label></p>
-        <p><textarea style="resize: none;" cols="40" rows="5"
-                name="cont">{{prod.descricao}}</textarea>
-        </p>    <p><label>Estoque:</label></p>
-
-        <p><input type="number" id='estoque' name='estoque' value={{prod.estoque}}></p>
-
-
-        -->
-        <p>
-            <input class="btn btn-primary" type="submit">
-            <a href="{% url 'blog' %}">
-                <input class="btn btn-secondary" type="button" value="Voltar"> 
-            </a>      
-        </p>
-    </form>
+            <p>
+                <input class="btn btn-primary" type="submit" value="Salvar">
+                <a href="{% url 'blog' %}">
+                    <input class="btn btn-secondary" type="button" value="Voltar"> 
+                </a>      
+            </p>
+        </form>
+    </div>
 </div>
 {% endblock conteudo %}

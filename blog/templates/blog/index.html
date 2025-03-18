@@ -4,48 +4,108 @@
 
 {% block conteudo %}
 <style>
-   
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .btn {
+        margin: 0 5px; /* Espaçamento entre os botões */
+    }
 </style>
+
 <!-- ==================================== barra de pesquisa ======================================== -->
-    <hr>
-    <header class="navbar navbar-light bg-light" id="nav_index">
-        <form class="form-inline m-1" id="pesquisar">
-            <input class="form-control mr-sm-2" type="search" name="pesq" placeholder="Pesquisar" aria-label="Pesquisar">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Pesquisar</button>
-        </form>
-        <a class="btn" id="btn_cadastra" href="{% url 'add_produtos' %}">Cadastrar</a>
-    </header>
-    <hr>
+<hr>
+<header class="navbar navbar-light bg-light" id="nav_index">
+    <form class="form-inline m-1" id="pesquisar">
+        <input class="form-control mr-sm-2" type="search" name="pesq" placeholder="Pesquisar" aria-label="Pesquisar">
+        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Pesquisar</button>
+    </form>
+    <a class="btn" id="btn_cadastra" href="{% url 'add_produtos' %}">Cadastrar Produto</a>
+</header>
+<hr>
 <!-- ==================================== final da barra de pesquisa ======================================== -->
 
-<div class="container">
-    <div class="row row-cols-1 row-cols-md-4 g-4 p-1">
-        {% for post in produtos %}
-        <div class="col">
-            <div class="card shadow-sm" id="produto">
-                {% if post.imagem %}
-                    <img src="{{post.imagem.url}}" class="card-img-top" alt="{{ post.nome }}">
-                {% else %}
-                    <img src="{% static 'img/sem_imagem.jpg' %}" class="card-img-top" alt="Imagem não disponível">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">Nome: {{ post.nome }}</h5>
-                    <h5 class="card-title">Preço: {{ post.preco }}</h5>
-                    <h5 class="card-title">Preço Comprado: {{ post.preco_comprado }}</h5>
-                    <h5 class="card-title">Qtd estoque: {{ post.estoque }}</h5>
-                    <h5 class="card-title">data Cad.: {{ post.data |date:"d/m/y H:id" }}</h5>
-                    
-                    <div class="d-flex justify-content-between">
-                        <a href="{% url 'produtos' post.id %}" class="btn btn-primary">Acessar</a>
-                        <a href="{% url 'edit_postagem' post.id %}" class="btn btn-secondary">Editar</a>
-                        <a href="{% url 'del_postagem' post.id %}" class="btn btn-danger">Deletar</a>
-                    </div>
-                </div>
-            </div>
+{% if messages %}
+<div class="container mt-3">
+    {% for msg in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ msg }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
 </div>
 
+<script>
+    // Função para ocultar os alertas após um certo tempo
+    setTimeout(function() {
+        $('.alert').alert('close');
+    }, 4000); // 4000 milissegundos = 4 segundos
+</script>
+{% endif %}
+
+<div class="container">
+    <table>
+        <thead>
+            <tr>
+                <th>foto</th>
+                <th>Nome</th>
+                <th>Preço de Venda</th>
+                <th>Preço de custo</th>
+                <th>Qtd Estoque</th>
+                <th>Data Cad.</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for post in produtos %}
+            <tr>
+                <td>{% if post.imagem %}
+                    <img style="width: 60px; height: 60px;" src="{{post.imagem.url}}"  alt="{{ post.nome }}">
+                {% else %}
+                    <img class="fotos_produtos" src="{% static 'img/sem_imagem.jpg' %}" alt="Imagem não disponível">
+                {% endif %}</td>
+                <td>{{ post.nome }}</td>
+                <td>R$ {{ post.preco|floatformat:2 }}</td>
+                <td>R$ {{ post.preco_comprado|floatformat:2 }}</td>
+                <td>{{ post.estoque }}</td>
+                <td>{{ post.data|date:"d/m/y H:i" }}</td>
+                <td>
+                    
+                    <div class="d-flex justify-content-between mt-2">
+                        <a style="width: 100px; font-size: 10px;" href="{% url 'colocar_em_oferta' post.id %}" class="btn {% if post.em_oferta %}btn-success{% else %}btn-warning{% endif %}">
+                            {% if post.em_oferta %} Remover Oferta {% else %} Colocar em Oferta {% endif %}
+                        </a>
+                        <a href="{% url 'produtos' post.id %}" class="btn btn-primary">Acessar</a>
+                        <a href="{% url 'edit_produtos' post.id %}" class="btn btn-secondary">Editar</a>
+                        <a href="{% url 'del_produto' post.id %}" class="btn btn-danger">Excluir</a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">Nenhum produto encontrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock conteudo %}

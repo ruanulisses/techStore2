@@ -15,17 +15,13 @@
 <body>
     <h1>Carrinho de Compras</h1>
     <div class="container">
-        <
         <table>
             <thead>
                 <tr>
                     <th>Imagem</th>
-                    <th>ID do Produto</th>
                     <th>Nome do Produto</th>
                     <th>Quantidade</th>
                     <th>Preço Unitário</th>
-                    <th>Subtotal</th>
-                    <th>Data Adicionado</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -39,12 +35,9 @@
                             <img src="{% static 'img/sem_imagem.jpg' %}" alt="Imagem não disponível" style="width: 50px; height: auto;">
                         {% endif %}
                     </td>
-                    <td>{{ item.produto.id }}</td>
                     <td>{{ item.produto.nome }}</td>
                     <td>{{ item.quantidade }}</td>
                     <td>R$ {{ item.produto.preco|floatformat:2 }}</td>
-                    <td>R$ {{ item.produto.preco|floatformat:2|add:item.quantidade|floatformat:2 }}</td>
-                    <td>{{ item.data_adicionado }}</td>
                     <td>
                         <form action="{% url 'remover_item' item.id %}" method="post">
                             {% csrf_token %}
@@ -62,12 +55,12 @@
 
         <div class="bnt_carrinhos">
 
-        <a href="{% url 'home' %}" class='btn-continue'>Continuar Comprando</a>
+        <a href="{% url 'produtos_list' %}" class='btn-continue'>Continuar Comprando</a>
 
             <!-- Formulário para Finalizar Compra -->
-            <form action="{% url 'finalizar_compra' %}" method="post" id="finalizar-form">
+            <form action="{% url 'pagina_pagamento' %}" method="post" id="finalizar-form">
                 {% csrf_token %}
-                <button type="submit" class='btn-finalizar'>Finalizar Compra</button>
+                <button type="submit" class='btn-finalizar'>Pagamento</button>
             </form>
         </div>
     </div>

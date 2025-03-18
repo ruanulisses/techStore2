@@ -38,14 +38,14 @@
                     </div>
                     <p id="error-message">  
                         {% if messages %}
-                            <div class="messages">
+                            <div class="messages" style="color: #fff; z-index: 999;">
                                 {% for message in messages %}
                                     <p class="{{ message.tags }}">{{ message }}</p>
                                 {% endfor %}
                             </div>
                         {% endif %}
-                    </p>
-                    <a class="btns_login" href="{% url 'produtos_list' %}">Entrar como visitante</a>
+                    </p> 
+                    <a class="btns_login" href="{% url 'recuperar_senha' %}">Esqueceu a senha?</a>
                 </form>
                 
             </div>
@@ -54,5 +54,19 @@
     <!-- ============================ CONTEUDO PRINCIPAL ==================================================-->   
 
     {% comment %} <script src="{% static  'pastaTS/js/login.js' %}"></script> {% endcomment %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        {% if messages %}
+            {% for message in messages %}
+                swal({
+                    title: "Mensagem",
+                    text: "{{ message }}",
+                    icon: "success", // ou "error" dependendo do tipo de mensagem
+                    button: "OK",
+                });
+            {% endfor %}
+        {% endif %}
+    });
+    </script>
 </body>
 </html>

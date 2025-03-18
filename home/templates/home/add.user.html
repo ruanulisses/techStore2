@@ -121,7 +121,7 @@
                 </div>
             {% endif %}
 
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data" onsubmit="return validarSenha()" >
                 {% csrf_token %}
 
                 <div class="form-group">
@@ -163,7 +163,7 @@
                     <label for="nova_senha">Senha: </label>
                     <input type="password" id="nova_senha" name="nova_senha" required>
                 </div>
-
+            
                 <div class="btns_login">
                     <input type="submit" value="Cadastrar">
                     <a href="{% url 'index' %}">
@@ -173,5 +173,17 @@
             </form>
         </div>
     </div>
+    <script>
+        function validarSenha() {
+            const senha = document.getElementById('nova_senha').value;
+            const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/; // Pelo menos 8 caracteres, uma letra, um número e um caractere especial
+    
+            if (!regex.test(senha)) {
+                alert("A senha deve ter pelo menos 8 caracteres, incluindo letras, números e caracteres especiais.");
+                return false; // Impede o envio do formulário
+            }
+            return true; // Permite o envio do formulário
+        }
+    </script>
 </body>
 </html>
