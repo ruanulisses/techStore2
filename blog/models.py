@@ -31,6 +31,7 @@ class Comentario(models.Model):
         return self.texto
     
 
+
 class Produto(models.Model):
     """Aqui são armazenados os Produtos"""
     nome = models.CharField(max_length=100)
@@ -41,6 +42,7 @@ class Produto(models.Model):
     estoque = models.IntegerField(default=0)
     data = models.DateTimeField(auto_now_add=True)
     em_oferta = models.BooleanField(default=False)
+    categoria = models.CharField(max_length=100, default='Sem categoria')
 
     def preco_com_desconto(self):
         if self.em_oferta:
@@ -52,12 +54,22 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome
-    
+
+        
+class Comentario(models.Model):
+    produto = models.ForeignKey('Produto', on_delete=models.CASCADE, related_name='comentarios')
+    autor = models.CharField(max_length=100, default='Anônimo')
+    texto = models.TextField()
+    data_postagem = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.autor} comentou em {self.produto.nome}'
+
 
        
 class RegistrosFinanceiro(models.Model):
     produto = models.ForeignKey(Produto, null=True, on_delete=models.SET_NULL)
-    mes = models.CharField(max_length=20, default=datetime.now().strftime('%d/%m/%Y'))  # Exemplo: 'Janeiro'
+    mes = models.CharField(max_length=20, default=datetime.now().strftime('%d/%m/%Y'))  
     vendas = models.DecimalField(max_digits=10, decimal_places=2)  # Total de vendas
     despesas = models.DecimalField(max_digits=10, decimal_places=2)  # Total de despesas
     lucro = models.DecimalField(max_digits=10, decimal_places=2)  # Lucro

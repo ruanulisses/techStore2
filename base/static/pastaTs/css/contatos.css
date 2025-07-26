@@ -1,11 +1,11 @@
-*{
+/* *{
     margin-top: 3px;
     padding: 0;
     box-sizing: border-box;
     font-family: "Roboto";
   }
-  
-  html::-webkit-scrollbar{
+   */
+  /* html::-webkit-scrollbar{
     width: 1px;
   }
   html::-webkit-scrollbar-track{
@@ -16,7 +16,7 @@
     border-radius: 5rem;
   
   }
-  
+   */
   
   
   body{

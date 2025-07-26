@@ -4,22 +4,21 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),  # Mapeia a URL raiz para a função index
+    path('cadastro/', views.cadastro_view, name='cadastro'),
     path('home', views.home, name='home'), 
-    path('contatos/', views.contatos, name='contatos'),
-    path('produtos/', views.produtos_list, name='produtos_list'), 
-    path('cadastrar/', views.cadastrar_usuario, name='cadastrar_usuario'),
-    path('login/', views.login_usuario, name='login_usuario'),
-    path('admin/', views.admin, name='admin'),
-    path('add_carrinho/<int:produto_id>/', views.add_carrinho, name='add_carrinho'),
-    path('carrinho/', views.carrinho_view, name='carrinho'),
-    path('finalizar_compra/', views.finalizar_compra, name='finalizar_compra'),  # URL para finalizar a compra
-    path('remover_item/<int:item_id>/', views.remover_item, name='remover_item'),  # URL para remover item
-    path('conta/', views.conta, name='conta'),
-    path('produto/', views.produtos, name='produtos'),
-    path('pagamento/', views.pagina_pagamento, name='pagina_pagamento'),
-    path('processar_pagamento/', views.processar_pagamento, name='processar_pagamento'),
-    path('pagina_confirmacao/', views.pagina_confirmacao, name='pagina_confirmacao'),
-    path('recuperar_senha/', views.recuperar_senha, name='recuperar_senha'),
-    
+     path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('produtos/', views.lista_produtos, name='produtos'), 
+    path('finalizar-compra/', views.finalizar_compra, name='finalizar_compra'),
+    path('pagamento_pix/', views.pagamento_pix, name='pagamento_pix'),
+    path('remover-item/<int:item_id>/', views.remover_item_carrinho, name='remover_item_carrinho'),
+    path('produto/<int:produto_id>/', views.detalhe_produto, name='detalhe_produto'),
+    path('adicionar-carrinho-ajax/', views.adicionar_carrinho_ajax, name='adicionar_carrinho_ajax'),
+    path('carrinho/', views.carrinho, name='carrinho'),
+    path('finalizar-compra/', views.finalizar_compra, name='finalizar_compra'),
+    path('pagamento-pix/<int:pedido_id>/', views.pagamento_pix, name='pagamento_pix'),
+    path('compra-finalizada/', views.compra_finalizada, name='compra_finalizada'),
+    path('pagamento/', views.pagamento, name='pagamento'),
+    path('perfil/', views.perfil_view, name='perfil'),
 ]
                 

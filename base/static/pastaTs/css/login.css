@@ -1,11 +1,9 @@
-
-
-*{
+/* *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Roboto";
-}
+} */
 
 body{
     height: 100vh;
@@ -70,7 +68,7 @@ input[type="submit"] {
     padding: 10px 40px;
     font-size: 18px;
     font-weight: 600;
-    background-color: #0ca55b ;
+    background-color: #2a885a ;
     border: 0;
     border-radius: 30px;
     cursor: pointer;

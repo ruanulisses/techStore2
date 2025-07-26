@@ -9,7 +9,7 @@
 
 <div class="container">
     <h1>Editar Funcionário</h1>
-    <form method="POST" enctype="multipart/form-data" action="{% url 'editar_funcionario' funcionario.id %}">
+    <form method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
         {% csrf_token %}
         
         <div class="mb-3">
@@ -34,7 +34,7 @@
         </div>
         <div class="mb-3">
             <label for="id_data_nascimento" class="form-label">Data de Nascimento</label>
-            <input type="date" class="form-control" id="id_data_nascimento" name="data_nascimento" value="{{ funcionario.data_nascimento }}" required>
+            <input type="date" class="form-control" id="id_data_nascimento" name="data_nascimento" value="{{ funcionario.data_nascimento|date:'Y-m-d' }}" required>
         </div>
         <div class="mb-3">
             <label for="id_endereco" class="form-label">Endereço</label>
@@ -50,7 +50,7 @@
         </div>
         <div class="mb-3">
             <label for="id_data_admissao" class="form-label">Data de Admissão</label>
-            <input type="date" class="form-control" id="id_data_admissao" name="data_admissao" value="{{ funcionario.data_admissao }}" required>
+            <input type="date" class="form-control" id="id_data_admissao" name="data_admissao" value="{{ funcionario.data_admissao|date:'Y-m-d' }}" required>
         </div>
         <div class="mb-3">
             <label for="id_salario" class="form-label">Salário</label>
@@ -66,17 +66,20 @@
         </div>
         <div class="mb-3">
             <label for="id_data_pagamento" class="form-label">Data de Pagamento</label>
-            <input type="date" class="form-control" id="id_data_pagamento" name="data_pagamento" value="{{ funcionario.data_pagamento }}">
+            <input type="date" class="form-control" id="id_data_pagamento" name="data_pagamento" value="{{ funcionario.data_pagamento|date:'Y-m-d' }}">
         </div>
         <div class="mb-3">
             <label for="id_senha" class="form-label">Senha</label>
             <input type="password" class="form-control" id="id_senha" name="senha" placeholder="Digite uma nova senha (deixe em branco para manter a atual)">
         </div>
-        <div class="mb-3">
-            <label for="id_imagem" class="form-label">Imagem</label>
-            <input type="file" class="form-control" id="id_imagem" name="imagem">
+        <div class="form-group">
+            <label for="imagem">Imagem:</label>
+            {% if funcionario.imagem %}
+                <img src="{{ funcionario.imagem.url }}" alt="Imagem do Produto" style="max-width: 200px; margin-bottom: 10px;">
+            {% endif %}
+            <input type="file" name="imagem" class="form-control-file">
         </div>
-        
+
         <button type="submit" class="btn btn-primary">Salvar</button>
     </form>
 </div>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Compra Finalizada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #e0ffe0;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .message {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .message h1 {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <h1>✅ Pagamento Confirmado!</h1>
+        <p>Sua compra foi finalizada com sucesso.</p>
+        <a href="{% url 'home' %}">Voltar para a Loja</a>
+    </div>
+</body>
+</html>

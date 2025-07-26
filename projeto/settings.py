@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -53,7 +54,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-AUTHENTICATION_BACKENDS = ['home.auth_backend.EmailAuthBackend']
+AUTHENTICATION_BACKENDS = [
+    'home.auth_backend.EmailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 ROOT_URLCONF = 'projeto.urls'
 
@@ -117,19 +122,23 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOGIN_URL = '/accounts/login/' 
+LOGIN_URL = '/login/' 
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
     BASE_DIR / 'base/static/'
 ]
 
-STATIC_ROOT = 'static/'
 
-STATIC_URL = 'static/'
+
+
+#  STATIC_ROOT = 'static/'
+
 
 MEDIA_ROOT = BASE_DIR / 'media/'
 
@@ -141,8 +150,3 @@ SESSION_COOKIE_AGE = 1209600  # 2 semanas em segundos
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/home/'  # Redireciona para a página inicial após o login
-LOGOUT_REDIRECT_URL = '/accounts/login/'  # Redireciona para a página de login após o logout

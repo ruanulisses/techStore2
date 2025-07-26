@@ -5,19 +5,21 @@
 <head>
     {% include 'modulosTS/head.html' %}
     
+    
     {% comment %} <title>{% block title %}{% endblock title %}</title> {% endcomment %}
 
 </head>
 
 <body>
+
     {% include 'modulosTS/nav.html' %}
-    
  
     {% block conteudo %}{% endblock conteudo %}
+
+    {% include 'modulos/footer.html' %}
    
      <!-- ============================ SCRIPTS ==================================================-->    
-     
-        <script src=" {% static 'pastaTs\js\menu.js' %}"></script>
+    
         <script src="{% static 'pastaTs\js\darkmode.js' %}"></script>
     <!-- ============================ SCRIPTS ==================================================-->   
 

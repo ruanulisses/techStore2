@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.http import HttpResponse
 from django.db.models import Sum
+from django.utils import timezone
+
 from twilio.rest import Client
 
 from .models import Postagem, Produto, RegistrosFinanceiro, Notificacao, Funcionario, HistoricoPagamento
@@ -51,9 +53,10 @@ def add_produtos(request):
         preco = request.POST.get('preco').strip().replace(',', '.') 
         preco_comprado = request.POST.get('preco_comprado').strip().replace(',', '.')
         estoque = request.POST.get('estoque').strip()
+        categoria = request.POST.get('categoria').strip()
         
         # Se todas as validações passarem, cria o produto
-        post = Produto(nome=nome, preco=float(preco), preco_comprado=float(preco_comprado), imagem=img, descricao=descricao, estoque=int(estoque))
+        post = Produto(nome=nome, preco=float(preco), preco_comprado=float(preco_comprado), imagem=img, descricao=descricao, estoque=int(estoque), categoria=categoria)
         messages.success(request, "Produto salvo com sucesso!")
         post.save()
         return redirect('blog')
@@ -69,6 +72,7 @@ def edit_produtos(request, prod_id):
         preco_comprado = request.POST.get('preco_comprado').strip().replace(',', '.')  # Substitui vírgula por ponto
         descricao = request.POST.get('descricao').strip()
         estoque = request.POST.get('estoque').strip()   
+        categoria = request.POST.get('categoria').strip()   
 
         # Validação dos campos
         if len(nome) < 8:
@@ -93,6 +97,7 @@ def edit_produtos(request, prod_id):
         prod.preco_comprado = float(preco_comprado)  # Converte para float
         prod.descricao = descricao
         prod.estoque = int(estoque)  # Converte para inteiro
+        prod.categoria = categoria  # Converte para inteiro
 
         # Verifica se uma nova imagem foi enviada
         if request.FILES.get('imagem'):
@@ -102,6 +107,12 @@ def edit_produtos(request, prod_id):
         if prod:
              messages.success(request, "Produto editado com sucesso!")
         return redirect('blog')
+    
+    contexto = {
+        'prod': prod
+    }
+    
+    return render(request, 'blog/edit_produto.html', contexto)
 
 def del_produto(request, prod_id):
     # print(f"Request method: {request.method}")  # Para verificar o método da solicitação
@@ -129,7 +140,7 @@ def controle_estoque(request):
 # ==================================================================================
 
 
-# ================ PAGINA GESTÃO FINANCEIRA ========================================
+# ================ PAGINA GESTÃO FINANCEIRA/ RELATORIO DE VENDA ========================================
 def gestao_financeira(request):
     return render(request, 'blog/gestao_financeira.html')
 
@@ -321,11 +332,13 @@ def lista_funcionarios(request):
     }
     return render(request, 'blog/funcionario.html', contexto) 
 
+from decimal import Decimal
 def editar_funcionario(request, id):
     funcionario = get_object_or_404(Funcionario, id=id)
 
     if request.method == 'POST':
         # Atualiza os campos do funcionário
+    
         funcionario.nome = request.POST.get('nome')
         funcionario.sobrenome = request.POST.get('sobrenome')
         funcionario.email = request.POST.get('email')
@@ -352,8 +365,10 @@ def editar_funcionario(request, id):
         funcionario.save()  # Salva as alterações
         return redirect('lista_funcionarios')  # Redireciona para a lista de funcionários
 
-    # Se não for POST, renderiza o formulário de edição
-    return render(request, 'blog/editar_funcionario.html', {'funcionario': funcionario})
+    contexto = {
+        'funcionario': funcionario
+    }
+    return render(request, 'blog\editar_fucionario.html', contexto)
 
 def deletar_funcionario(request, id):
     funcionario = get_object_or_404(Funcionario, id=id)

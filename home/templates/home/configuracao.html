@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil do Usuário</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #ffffff);
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #0d6efd;
+      margin-bottom: 25px;
+    }
+
+    form label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .foto-preview {
+      display: block;
+      margin: 20px auto;
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #0d6efd;
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 30px;
+      padding: 14px;
+      background: #0d6efd;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #0b5ed7;
+    }
+
+    .mensagem {
+      text-align: center;
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+    }
+
+    .voltar {
+      display: inline-block;
+      margin-top: 20px;
+      background: #6c757d;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .voltar:hover {
+      background: #5a6268;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Perfil do Usuário</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="mensagem">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    {% if perfil.foto %}
+      <img src="{{ perfil.foto.url }}" alt="Foto de perfil" class="foto-preview">
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label for="username">Nome de usuário:</label>
+      <input type="text" name="username" value="{{ user.username }}" required>
+
+      <label for="email">E-mail:</label>
+      <input type="email" name="email" value="{{ user.email }}" required>
+
+      <label for="telefone">Telefone:</label>
+      <input type="text" name="telefone" value="{{ perfil.telefone }}" placeholder="(00) 00000-0000">
+
+      <label for="endereco">Endereço:</label>
+      <input type="text" name="endereco" value="{{ perfil.endereco }}" placeholder="Rua Exemplo, 123">
+
+      <label for="foto">Foto de perfil:</label>
+      <input type="file" name="foto">
+
+      <button type="submit" class="btn">Salvar Alterações</button>
+    </form>
+
+    <a href="javascript:history.back()" class="voltar">← Voltar</a>
+  </div>
+</body>
+</html>
