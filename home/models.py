@@ -48,3 +48,14 @@ class ComentarioSite(models.Model):
 
     def __str__(self):
         return f"Comentário de {self.autor.username}"
+    
+
+
+class NotificacaoUsuario(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notificacoes')
+    mensagem = models.TextField()
+    lida = models.BooleanField(default=False)
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Notificação para {self.user.username} - {'Lida' if self.lida else 'Não lida'}"

@@ -8,12 +8,36 @@ from django.utils import timezone
 from django.http import HttpResponse
 from django.db.models import Sum
 from django.utils import timezone
+from home.models import NotificacaoUsuario
 
 from twilio.rest import Client
 
-from .models import Postagem, Produto, RegistrosFinanceiro, Notificacao, Funcionario, HistoricoPagamento
+from .models import Produto, RegistrosFinanceiro, Notificacao, Funcionario, HistoricoPagamento, Pedido
 
 # Create your views here.
+
+def pedidos_vendedor(request):
+    pedidos = Pedido.objects.all().order_by('-data_criacao')  # pega todos os pedidos
+    return render(request, 'blog/pedidos_vendedor.html', {'pedidos': pedidos})
+
+
+def atualizar_status_pedido(request, pedido_id):
+    # Pega o pedido diretamente pelo ID, sem verificar o usuário
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+
+    # Atualiza o status
+    pedido.status = "enviado"
+    pedido.save()
+
+    # Cria notificação para o usuário do pedido
+    NotificacaoUsuario.objects.create(
+        user=pedido.user,
+        mensagem=f"Seu pedido #{pedido.id} foi enviado!"
+    )
+
+    return redirect('pedidos_vendedor')
+
+
 
 # ================ PAGINA HOME =====================================================
 def index(request):

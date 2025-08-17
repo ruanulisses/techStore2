@@ -20,5 +20,7 @@ urlpatterns = [
     path('compra-finalizada/', views.compra_finalizada, name='compra_finalizada'),
     path('pagamento/', views.pagamento, name='pagamento'),
     path('perfil/', views.perfil_view, name='perfil'),
+    path('meus-pedidos/', views.meus_pedidos, name='meus_pedidos'),
+    path('sobre_nos', views.sobre_nos, name='sobre_nos'),
 ]
                 

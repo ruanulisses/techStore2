@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block conteudo %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+        margin: 40px 0;
+        color: #333;
+    }
+
+    .tabela-pedidos {
+        width: 90%;
+        margin: 0 auto 50px;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .tabela-pedidos th, .tabela-pedidos td {
+        padding: 12px 15px;
+        text-align: center;
+        background-color: #fff;
+        border-radius: 8px;
+    }
+
+    .tabela-pedidos th {
+        background-color: #4CAF50;
+        color: white;
+        font-weight: bold;
+    }
+
+    .tabela-pedidos tr:hover td {
+        background-color: #f1f1f1;
+    }
+
+    .btn-enviar {
+        background-color: #28a745;
+        color: white;
+        padding: 6px 12px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        transition: background-color 0.3s;
+    }
+
+    .btn-enviar:hover {
+        background-color: #218838;
+    }
+
+    .status-enviado {
+        color: gray;
+        font-weight: bold;
+    }
+
+    @media screen and (max-width: 768px) {
+        .tabela-pedidos th, .tabela-pedidos td {
+            font-size: 0.9rem;
+            padding: 10px;
+        }
+
+        .btn-enviar {
+            padding: 4px 8px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+
+<h1>Pedidos dos seus produtos</h1>
+
+{% if pedidos %}
+<table class="tabela-pedidos">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Produto</th>
+            <th>Cliente</th>
+            <th>Quantidade</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Data</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for pedido in pedidos %}
+        <tr>
+            <td>{{ pedido.id }}</td>
+            <td>{{ pedido.produto.nome }}</td>
+            <td>{{ pedido.cliente.username }}</td>
+            <td>{{ pedido.quantidade }}</td>
+            <td>R$ {{ pedido.total|floatformat:2 }}</td>
+            <td>{{ pedido.get_status_display }}</td>
+            <td>{{ pedido.data_criacao|date:"d/m/Y H:i" }}</td>
+            <td>
+                {% if pedido.status != "enviado" %}
+                    <a href="{% url 'atualizar_status_pedido' pedido.id %}" class="btn-enviar">
+                        Marcar como Enviado
+                    </a>
+                {% else %}
+                    <span class="status-enviado">Enviado</span>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p style="text-align: center; font-size: 1.1rem; color: #555;">Você não tem pedidos ainda.</p>
+{% endif %}
+{% endblock conteudo %}

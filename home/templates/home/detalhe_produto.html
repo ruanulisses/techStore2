@@ -196,7 +196,7 @@
 <div class="small-container">
 
     <div class="top-bar">
-        <a href="{% url 'home' %}" class="back-btn">← Voltar para a Loja</a>
+        <a href="{% url 'produtos' %}" class="back-btn">← Voltar para a Loja</a>
     </div>
 
     <div class="row">
@@ -205,7 +205,14 @@
         </div>
         <div class="col-2">
             <h1>{{ produto.nome }}</h1>
-            <p style="font-size: 24px; color: #555;">R$ {{ produto.preco }}</p>
+            {% if produto.em_oferta %}
+                <p style="font-size: 24px; color: #555;">
+                    <span style="text-decoration: line-through; color: #888;">R$ {{ produto.preco }}</span>
+                    <span style="color: #ff5c5c; font-weight: bold;">R$ {{ produto.preco_com_desconto }}</span>
+                </p>
+            {% else %}
+                <p style="font-size: 24px; color: #555;">R$ {{ produto.preco }}</p>
+            {% endif %}
             <div class="rating">
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>

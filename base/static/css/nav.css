@@ -3,7 +3,7 @@ nav.menu_lateral {
     height: 100%;
     background-color: #ffffff;
     padding: 40px 0 40px 1%;
-    box-shadow: 3px 0 0  #0ca55b;
+    box-shadow: 3px 0 0  #000000;
     position: fixed;
     top: 0;
     left: 0;
@@ -43,12 +43,12 @@ nav.menu_lateral {
   }
   
   ul li.ativo{
-    background-color: #0ca55b ;
+     background-color:#0046b6;
   }
   
   
   ul li.item_menu:hover{
-    background-color:#0ca55b;
+    background-color:#0046b6;
     border-radius: 50px;    
     
   
@@ -80,7 +80,7 @@ nav.menu_lateral {
     margin-left: 15px;
   }
   ul li.item_menu a .icones > i:hover{
-    background-color: #0ca55b;
+      background-color:#0046b6;
   }
   
   ul li ul.dropdown li{
@@ -108,7 +108,7 @@ nav.menu_lateral {
     
   }
   ul li a:hover{
-    background-color: #0ca55b;
+      background-color:#0046b6;
 
   }
   

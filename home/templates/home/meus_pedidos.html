@@ -1,0 +1,247 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notificações</title>
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+   
+</head>
+<style>
+    .user-nav {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 15px;
+        border-radius: 8px;
+    }
+
+    .user-greeting {
+        color: #333;
+    }
+
+    .nav-link {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: #0056b3;
+    }
+
+    .logout {
+        color: #dc3545;
+    }
+
+    .logout:hover {
+        color: #a71d2a;
+    }
+
+    .separator {
+        color: #999;
+    } 
+    ::-webkit-scrollbar {
+        display: none;
+        }
+</style>
+<body>
+    <div class="container">
+   <!-- menu superior -->
+        <div class="navbar" style="margin-top: -60px;">
+                <div class="logo">
+                    <img src=" {% static 'images\logo-techStore.png' %} " style=" height: 200px; width: 100%;" alt="Logo">
+                </div>
+                <nav >
+                    <ul id="menuItems" >
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'produtos' %}">Produtos</a></li>
+                        <li><a href="">Sobre</a></li>
+                        <li><a href="{% url 'carrinho' %}">Carrinho</a></li>
+                        <li>
+                            <a href="{% url 'meus_pedidos' %}">
+                            🔔 Notificações
+                             {% if notificacoes_nao_lidas > 0 %}
+                                <span style="background:red;color:white;border-radius:50%;padding:2px 6px;font-size:12px;">
+                                    {{ notificacoes_nao_lidas }}
+                                </span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <img src=" {% static 'images/cart.png' %}">
+                
+                <img src=" {% static 'images/cart.png' %}" class="menu-icon" onclick="menutoggle()">
+                <div class="user-nav">
+                    {% if user.is_authenticated %}
+                        <span class="user-greeting">Olá, <strong>{{ user.username }}</strong></span>
+                        <a href="{% url 'logout' %}" class="nav-link logout">Sair</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="nav-link">Entrar</a>
+                        <span class="separator">|</span>
+                        <a href="{% url 'cadastro' %}" class="nav-link">Cadastrar</a>
+                    {% endif %}
+                </div>
+            </div>
+        
+        <style>
+            /* Título principal */
+            .titulo-principal {
+                color: #222;
+                text-align: center;
+                margin-bottom: 40px;
+                font-weight: 700;
+                font-size: 2.5rem;
+                letter-spacing: 1px;
+            }
+
+            /* Container das notificações */
+            .notificacoes {
+                background-color: #e6f4ea;
+                border-left: 6px solid #2e7d32;
+                padding: 20px 25px;
+                margin-bottom: 40px;
+                box-shadow: 0 2px 8px rgb(46 125 50 / 0.15);
+                border-radius: 8px;
+            }
+
+            /* Título notificações */
+            .notificacoes h3 {
+                color: #2e7d32;
+                margin-bottom: 20px;
+                font-weight: 600;
+                font-size: 1.5rem;
+                letter-spacing: 0.5px;
+            }
+
+            /* Lista notificações */
+            .notificacoes ul {
+                list-style: none;
+                padding-left: 0;
+                max-height: 220px;
+                overflow-y: auto;
+            }
+
+            /* Item da notificação */
+            .notificacoes li {
+                padding: 12px 0;
+                border-bottom: 1px solid #c8e6c9;
+                font-size: 1rem;
+                color: #2e2e2e;
+            }
+
+            /* Data da notificação */
+            .notificacoes li small {
+                color: #6b6b6b;
+                font-style: italic;
+                margin-left: 10px;
+                font-size: 0.85rem;
+            }
+
+            /* Lista de pedidos */
+            .lista-pedidos {
+                list-style: none;
+                padding-left: 0;
+                margin: 0;
+            }
+
+            /* Item do pedido */
+            .lista-pedidos li {
+                background: #ffffff;
+                border: 1px solid #ddd;
+                padding: 20px 25px;
+                margin-bottom: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgb(0 0 0 / 0.08);
+                transition: box-shadow 0.3s ease;
+            }
+
+            /* Hover item pedido */
+            .lista-pedidos li:hover {
+                box-shadow: 0 8px 20px rgb(0 0 0 / 0.12);
+            }
+
+            /* Título do pedido */
+            .lista-pedidos li strong {
+                font-size: 1.2rem;
+                color: #333;
+                display: block;
+                margin-bottom: 8px;
+            }
+
+            /* Nome do produto */
+            .produto-nome {
+                color: #1e88e5;
+                font-weight: 600;
+            }
+
+            /* Total do pedido */
+            .pedido-total {
+                color: #388e3c;
+                font-weight: 700;
+                font-size: 1.1rem;
+            }
+
+            /* Status do pedido */
+            .pedido-status {
+                color: #555;
+                font-style: normal;
+            }
+
+            /* Data do pedido */
+            .pedido-data {
+                color: #999;
+                font-size: 0.9rem;
+            }
+
+            /* Parágrafo quando não há pedidos */
+            .sem-pedidos {
+                color: #777;
+                font-style: italic;
+                text-align: center;
+                font-size: 1.1rem;
+                margin-top: 50px;
+            }
+            </style>
+
+        <h1 class="titulo-principal">Meus Pedidos</h1>
+
+        {% if notificacoes %}
+        <div class="notificacoes">
+            <h3>Notificações</h3>
+            <ul>
+                {% for notif in notificacoes %}
+                <li>
+                    {{ notif.mensagem }} 
+                    <small>- {{ notif.data_criacao|date:"d/m/Y H:i" }}</small>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if pedidos %}
+        <ul class="lista-pedidos">
+            {% for pedido in pedidos %}
+            <li>
+                <strong>Pedido {{ pedido.id }}</strong>
+                Produto: <span class="produto-nome">{{ pedido.produto.nome }}</span><br>
+                Quantidade: {{ pedido.quantidade }}<br>
+                Total: <span class="pedido-total">R$ {{ pedido.total }}</span><br>
+                Status: <em class="pedido-status">{{ pedido.get_status_display }}</em><br>
+                Data: <small class="pedido-data">{{ pedido.data_criacao|date:"d/m/Y H:i" }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="sem-pedidos">Você não tem pedidos ainda.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

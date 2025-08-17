@@ -4,8 +4,13 @@ from .models import Perfil
 from .models import ComentarioSite
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='Usuário')
-    password = forms.CharField(widget=forms.PasswordInput, label='Senha')
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Usuário', 'required': True}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Senha', 'required': True}))
+
+
+# class LoginForm(forms.Form):
+#     username = forms.CharField(label='Usuário')
+#     password = forms.CharField(widget=forms.PasswordInput, label='Senha')
 
 class CadastroForm(forms.ModelForm):
     password1 = forms.CharField(widget=forms.PasswordInput, label="Senha")

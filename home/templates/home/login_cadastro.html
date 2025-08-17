@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login / Cadastro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e0e0e0;
+            position: relative;
+        }
+
+        /* Mensagens fixas no topo */
+        .message-container {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            z-index: 9999;
+            animation: fadeInOut 4s ease forwards;
+        }
+        .message-error { background: #ff4d4d; }
+        .message-success { background: #00cc66; }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -20px); }
+            10% { opacity: 1; transform: translate(-50%, 0); }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-50%, -20px); }
+        }
+
+        .container {
+            display: flex;
+            width: 900px;
+            height: 500px;
+            background: rgba(30, 30, 30, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            transition: all 0.5s ease;
+        }
+        .image-panel {
+            flex: 1;
+            background-color: #afaaaa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
+        .image-panel img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+        .form-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            width: 100%;
+        }
+        form {
+            width: 100%;
+            max-width: 350px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+        }
+        form.active { display: flex; }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #00aaff;
+        }
+        label {
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        input {
+            padding: 12px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 6px;
+            background: #2a2a2a;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+        input:focus {
+            background: #333;
+            border: 1px solid #00aaff;
+        }
+        button {
+            background-color: #00aaff;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover { background-color: #008ecc; }
+        .toggle-links {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .toggle-links a {
+            color: #00aaff;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .toggle-links a:hover { text-decoration: underline; }
+        .container.login-mode { flex-direction: row; }
+        .container.login-mode .image-panel { order: 2; }
+        .container.login-mode .form-wrapper { order: 1; }
+        .container.cadastro-mode { flex-direction: row; }
+        .container.cadastro-mode .image-panel { order: 1; }
+        .container.cadastro-mode .form-wrapper { order: 2; }
+    </style>
+</head>
+<body>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message-container {% if message.tags == 'error' %}message-error{% elif message.tags == 'success' %}message-success{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container login-mode" id="container">
+        
+        <div class="image-panel">
+            <img src="{% static 'images/logo-techStore.png' %}" alt="Logo da Loja">
+        </div>
+        <div class="form-wrapper">
+            <!-- LOGIN -->
+            <form id="loginForm" method="post" action="{% url 'login' %}" class="active">
+                {% csrf_token %}
+                <h2>Entrar na Conta</h2>
+                <label>Usuário</label>
+                <input type="text" name="username" required>
+                <label>Senha</label>
+                <input type="password" name="password" required>
+                <button type="submit">Entrar</button>
+                <div class="toggle-links">
+                    <p>Não tem conta? <a href="#" id="showCadastro">Cadastre-se</a></p>
+                </div>
+            </form>
+
+            <!-- CADASTRO -->
+            <form id="cadastroForm" method="post" action="{% url 'cadastro' %}">
+                {% csrf_token %}
+                <h2>Criar Conta</h2>
+                <label>Usuário</label>
+                <input type="text" name="username" required>
+                <label>Email</label>
+                <input type="email" name="email" required>
+                <label>Senha</label>
+                <input type="password" name="password1" required>
+                <label>Confirmar Senha</label>
+                <input type="password" name="password2" required>
+                <button type="submit">Cadastrar</button>
+                <div class="toggle-links">
+                    <p>Já tem conta? <a href="#" id="showLogin">Entrar</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('container');
+            const loginForm = document.getElementById('loginForm');
+            const cadastroForm = document.getElementById('cadastroForm');
+            const showCadastro = document.getElementById('showCadastro');
+            const showLogin = document.getElementById('showLogin');
+
+            showCadastro.addEventListener('click', (event) => {
+                event.preventDefault();
+                loginForm.classList.remove('active');
+                cadastroForm.classList.add('active');
+                container.classList.remove('login-mode');
+                container.classList.add('cadastro-mode');
+            });
+
+            showLogin.addEventListener('click', (event) => {
+                event.preventDefault();
+                cadastroForm.classList.remove('active');
+                loginForm.classList.add('active');
+                container.classList.remove('cadastro-mode');
+                container.classList.add('login-mode');
+            });
+        });
+    </script>
+</body>
+</html>

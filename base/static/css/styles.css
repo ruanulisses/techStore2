@@ -565,6 +565,7 @@ select:focus {
         overflow: hidden;
         transition: max-height 0.5s;
     }
+    
 
     .navbar nav ul li {
         display: block;

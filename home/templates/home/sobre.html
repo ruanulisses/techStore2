@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre | e-ecomace</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+            color: #eaeaea;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px 20px 20px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(90deg, #00e5ff, #00ff99);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 229, 255, 0.6);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 15px auto;
+            color: #bfbfbf;
+        }
+
+        .historia {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .historia h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #00ffcc;
+        }
+
+        .historia p {
+            text-align: justify;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .team {
+            margin: 60px auto;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .team h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #00e5ff;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 25px rgba(0, 255, 170, 0.3);
+        }
+
+        .card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #00ffcc;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin: 10px 0 5px 0;
+            color: #00ffcc;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #d9d9d9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #808080;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Sobre a e-ecomace</h1>
+        <p>A e-ecomace nasceu com a missão de transformar a experiência de compra online, trazendo inovação, confiança e um toque futurista para o comércio digital.</p>
+    </header>
+
+    <section class="historia">
+        <h2>Nossa História</h2>
+        <p>
+            Fundada em 2025, a e-ecomace surgiu com a ideia de criar um espaço virtual que unisse praticidade, tecnologia e proximidade com os clientes. 
+            Com foco em oferecer não apenas produtos, mas também experiências únicas, a loja se destacou por seu design inovador e pelo atendimento humanizado. 
+            Hoje, seguimos crescendo e evoluindo, sempre guiados pela inovação e pelo compromisso com a satisfação dos nossos clientes.
+        </p>
+    </section>
+
+    <section class="team">
+        <h2>Quem Faz Parte da Nossa História</h2>
+        <div class="team-grid">
+            <div class="card">
+                <img src="{% static 'img/pessoa1.jpg' %}" alt="Pessoa 1">
+                <h3>Ruan Ulisses</h3>
+                <p>Fundador & CEO</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'img/pessoa2.jpg' %}" alt="Pessoa 2">
+                <h3>Ana Clara</h3>
+                <p>Gerente de Marketing</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'img/pessoa3.jpg' %}" alt="Pessoa 3">
+                <h3>Lucas Mendes</h3>
+                <p>Desenvolvedor Full-Stack</p>
+            </div>
+            <div class="card">
+                <img src="{% static 'img/pessoa4.jpg' %}" alt="Pessoa 4">
+                <h3>Mariana Souza</h3>
+                <p>Atendimento ao Cliente</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 e-ecomace. Todos os direitos reservados.
+    </footer>
+
+</body>
+</html>

@@ -1,95 +1,175 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 {% load static %}
 
 {% block conteudo %}
 <style>
+    body {
+        background-color: #f4f6f9;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Container principal */
+    .admin-container {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    /* Barra de ações */
+    .admin-header {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .admin-header form {
+        display: flex;
+        gap: 10px;
+    }
+
+    .admin-header input[type="search"] {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 8px 12px;
+        min-width: 240px;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    .admin-header input[type="search"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0,123,255,0.3);
+    }
+
+    /* Botão cadastrar */
+    .btn-cadastrar {
+        background: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+    .btn-cadastrar:hover {
+        background: #218838;
+    }
+
+    /* Tabela */
     .tabela-produtos {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0 10px;
     }
 
-    .tabela-produtos th, .tabela-produtos td {
-        padding: 14px 16px;
+    .tabela-produtos th {
+        background: #f1f3f5;
+        font-weight: 600;
+        padding: 14px;
         text-align: left;
-        background-color: #fff;
-        border-bottom: 1px solid #e0e0e0;
-        vertical-align: middle;
+        border-radius: 8px 8px 0 0;
     }
 
-    .tabela-produtos th {
-        background-color: #f8f9fa;
-        font-weight: bold;
+    .tabela-produtos td {
+        background: #fff;
+        padding: 14px;
+        vertical-align: middle;
+        border-bottom: 1px solid #eee;
+    }
+
+    .tabela-produtos tr {
+        border-radius: 10px;
+        transition: 0.2s;
     }
 
     .tabela-produtos tr:hover td {
-        background-color: #f1f1f1;
+        background-color: #f9fafb;
     }
 
     .tabela-produtos img {
         width: 60px;
         height: 60px;
-        border-radius: 8px;
+        border-radius: 10px;
         object-fit: cover;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
+    /* Botões da tabela */
     .btn-acoes a {
-        margin: 2px;
-        font-size: 12px;
-        white-space: nowrap;
+        margin: 4px;
+        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: 0.2s;
     }
 
-    #pesquisar input[type="search"] {
-        width: 200px;
+    .btn-acoes a:hover {
+        opacity: 0.85;
     }
 
     @media screen and (max-width: 768px) {
-        .btn-acoes a {
-            display: block;
-            margin: 4px 0;
-        }
-        #pesquisar {
+        .admin-header {
             flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .admin-header form {
+            width: 100%;
+        }
+        .admin-header input[type="search"] {
+            flex: 1;
+            width: 100%;
+        }
+        .btn-acoes {
+            flex-direction: column;
+            align-items: center;
+        }
+        .btn-acoes a {
+            width: 100%;
+            margin: 5px 0;
         }
     }
 </style>
 
-<hr>
-<div style="width: 80%; margin: 0 auto;">
-    <header class="navbar navbar-light bg-light d-flex justify-content-between align-items-center rounded p-3 shadow-sm" id="nav_index">
-        <form class="form-inline" id="pesquisar">
-            <input class="form-control mr-2" type="search" name="pesq" placeholder="Pesquisar produto..." aria-label="Pesquisar">
+<div class="admin-container mt-4">
+    <!-- Barra superior -->
+    <div class="admin-header">
+        <form method="get" id="pesquisar">
+            <input type="search" name="pesq" placeholder="Pesquisar produto..." aria-label="Pesquisar">
             <button class="btn btn-outline-primary" type="submit">Pesquisar</button>
         </form>
-        <a class="btn btn-success" id="btn_cadastra" href="{% url 'add_produtos' %}">Cadastrar Produto</a>
-    </header>
-</div>
+        <a class="btn-cadastrar" href="{% url 'add_produtos' %}">+ Cadastrar Produto</a>
+    </div>
 
-<hr>
+    <!-- Mensagens -->
+    {% if messages %}
+    <div class="mt-3">
+        {% for msg in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
 
-{% if messages %}
-<div class="container mt-3">
-    {% for msg in messages %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ msg }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    {% endfor %}
-</div>
+    <script>
+        setTimeout(function() {
+            $('.alert').alert('close');
+        }, 4000);
+    </script>
+    {% endif %}
 
-<script>
-    setTimeout(function() {
-        $('.alert').alert('close');
-    }, 4000);
-</script>
-{% endif %}
-
-<div class="container mt-4">
-    <div class="table-responsive">
+    <!-- Tabela -->
+    <div class="table-responsive mt-4">
         <table class="table tabela-produtos shadow-sm rounded">
-            <thead class="thead-light">
+            <thead>
                 <tr>
                     <th>Foto</th>
                     <th>Nome</th>
@@ -111,13 +191,13 @@
                         {% endif %}
                     </td>
                     <td>{{ post.nome }}</td>
-                    <td>R$ {{ post.preco|floatformat:2 }}</td>
-                    <td>R$ {{ post.preco_comprado|floatformat:2 }}</td>
+                    <td><span class="text-success font-weight-bold">R$ {{ post.preco|floatformat:2 }}</span></td>
+                    <td><span class="text-muted">R$ {{ post.preco_comprado|floatformat:2 }}</span></td>
                     <td>{{ post.estoque }}</td>
                     <td>{{ post.data|date:"d/m/Y H:i" }}</td>
                     <td class="text-center">
                         <div class="btn-acoes d-flex flex-wrap justify-content-center">
-                            <a href="{% url 'colocar_em_oferta' post.id %}" style="width: 110px;" class="btn {% if post.em_oferta %}btn-success{% else %}btn-warning{% endif %}">
+                            <a href="{% url 'colocar_em_oferta' post.id %}" class="btn {% if post.em_oferta %}btn-success{% else %}btn-warning{% endif %}">
                                 {% if post.em_oferta %}Remover Oferta{% else %}Colocar em Oferta{% endif %}
                             </a>
                             <a href="{% url 'edit_produtos' post.id %}" class="btn btn-secondary">Editar</a>

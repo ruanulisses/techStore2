@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from blog.models import Notificacao, Comentario # Importando o modelo Produto
-from .models import Carrinho, ItemCarrinho, Pedido
+from blog.models import  Comentario, Pedido # Importando o modelo Produto
+from .models import Carrinho, ItemCarrinho,  NotificacaoUsuario
 from random import sample
 from django.utils import timezone
 from blog.models import Produto,Venda  # Importando o modelo Produto do app estoque
@@ -21,49 +21,120 @@ from .forms import ComentarioSiteForm
 
 
 
+
+def sobre_nos(request):
+    return render(request, 'home/sobre_nos.html')
+
+
+@login_required
+def meus_pedidos(request):
+    pedidos = Pedido.objects.filter(user=request.user).order_by('-data_criacao')
+    notificacoes = request.user.notificacoes.filter(lida=False).order_by('-data_criacao')
+    return render(request, 'home/meus_pedidos.html', {'pedidos': pedidos, 'notificacoes': notificacoes})
+
+
+@login_required
+def marcar_notificacoes_lidas(request):
+    request.user.notificacoes.filter(lida=False).update(lida=True)
+    return redirect('meus_pedidos')
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib import messages
+import re
+
 def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
-            user = authenticate(request, username=username, password=password)
-            print(f'Tentando autenticar: {username} / {password}')
-            print(f'Usuário retornado pelo authenticate: {user}')
-
-            if user is not None:
-                auth_login(request, user)
-                messages.success(request, f'Bem-vindo(a) {username}!')
-                print(f'logado com sucesso {user}')
-                return redirect('home')  # Ajuste para a sua URL de destino após login
+        # Verifica login rápido para admin fixo
+        if username == "ruanadmin" and password == "Admin":
+            # Pega o usuário admin existente
+            user = User.objects.filter(username="admin").first()
+            if user:
+                # autentica manualmente usando username e senha
+                user = authenticate(request, username=user.username, password="Admin")
+                if user:
+                    login(request, user)
+                return redirect('blog')
             else:
-                messages.error(request, 'Usuário ou senha inválidos')
-    else:
-        form = LoginForm()
-    
-    return render(request, 'home/login.html', {'form': form})
+                messages.error(request, "Usuário admin não existe. Crie via createsuperuser.")
+                return redirect('login')
+        
+        # Login normal usando authenticate
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Usuário ou senha inválidos.")
+            return redirect('login')
 
+    return render(request, 'home/login_cadastro.html')
+
+def cadastro_view(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password1 = request.POST.get("password1")
+        password2 = request.POST.get("password2")
+
+        # Verifica se as senhas coincidem
+        if password1 != password2:
+            messages.error(request, "As senhas não coincidem.")
+            return redirect('cadastro')
+
+        # Verifica se o email já existe
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email já existe.")
+            return redirect('cadastro')
+
+        # Verifica se o username já existe
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Nome de usuário já existe.")
+            return redirect('cadastro')
+
+        # Validação de senha forte
+        if len(password1) < 8:
+            messages.error(request, "A senha deve ter pelo menos 8 caracteres.")
+            return redirect('cadastro')
+        if not re.search(r"[0-9]", password1):
+            messages.error(request, "A senha deve conter pelo menos um número.")
+            return redirect('cadastro')
+
+        # Cria usuário admin se for o email específico
+        #Email:ruanadmin
+        #Senha:ruan1234
+        if email == "Ruanadmin@techstore.com":
+            user = User.objects.create_superuser(username=username, email=email, password=password1)
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password1)
+
+        user.save()
+
+        # Autentica e faz login
+        user = authenticate(request, username=username, password=password1)
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Conta criada com sucesso!")
+            
+            # Redireciona admins para a área de pedidos/blog
+            if user.is_superuser:
+                return redirect('pedidos_vendedor')
+            
+            return redirect('home')
+        else:
+            messages.error(request, "Erro ao autenticar o usuário.")
+            return redirect('cadastro')
+
+    return render(request, 'home/login_cadastro.html')
 
 def logout_view(request):
     logout(request)
-    return redirect('login')  # volta pra tela de login
-
-
-def cadastro_view(request):
-    if request.method == 'POST':
-        form = CadastroForm(request.POST)
-        if form.is_valid():
-            user = form.save()  # Salva o usuário com senha corretamente criptografada
-            auth_login(request, user)  # Usa o mesmo login aqui
-            messages.success(request, 'Cadastro realizado com sucesso!')
-            return redirect('home')
-        else:
-            messages.error(request, 'Erro no cadastro. Verifique os dados.')
-    else:
-        form = CadastroForm()
-    return render(request, 'home/cadastro.html', {'form': form})
-
+    return redirect('login')
 
 @login_required
 def configuracoes(request):
@@ -77,7 +148,6 @@ def configuracoes(request):
         return redirect('configuracoes')
 
     return render(request, 'home/configuracoes.html', {'perfil': perfil})
-
 
 @csrf_exempt
 @login_required
@@ -96,13 +166,11 @@ def adicionar_carrinho_ajax(request):
             return JsonResponse({'sucesso': False, 'erro': 'Produto não encontrado'})
     return JsonResponse({'sucesso': False, 'erro': 'Método inválido'})
 
-
 @login_required
 def carrinho(request):
     itens = ItemCarrinho.objects.filter(user=request.user)
     total = sum(item.produto.preco * item.quantidade for item in itens)
     return render(request, 'home/carrinho.html', {'itens': itens, 'total': total})
-
 
 @login_required
 def remover_item_carrinho(request, item_id):
@@ -110,61 +178,134 @@ def remover_item_carrinho(request, item_id):
     item.delete()
     return redirect('carrinho')
 
-
 def pagamento(request):
     if request.method == 'POST':
         metodo = request.POST.get('metodo_pagamento')
 
         if metodo == 'pix':
-            # Criar pedido e redirecionar para o QR Code
-            pedido = Pedido.objects.create(user=request.user, total=0)
             itens = ItemCarrinho.objects.filter(user=request.user)
 
-            total = 0
-            for item in itens:
-                pedido.itens.add(item)
-                total += item.produto.preco * item.quantidade
+            if not itens.exists():
+                # Se o carrinho estiver vazio, você pode redirecionar ou mostrar erro
+                return redirect('carrinho')  # ou outra página
 
-            pedido.total = total
-            pedido.save()
+            pedidos_criados = []
+            for item in itens:
+                produto = item.produto
+
+                # Supondo que você tenha um campo vendedor no Produto, se não tiver, defina outro jeito de pegar
+                # vendedor = produto.vendedor if hasattr(produto, 'vendedor') else None
+                # if vendedor is None:
+                #     # Se não tiver vendedor, pode colocar algum padrão ou retornar erro
+                #     # Aqui só um exemplo, coloque seu próprio fluxo
+                #     vendedor = User.objects.filter(is_staff=True).first()  # vendedor padrão
+
+                total_item = produto.preco * item.quantidade
+
+                pedido = Pedido.objects.create(
+                    user=request.user,
+                    # vendedor=vendedor,
+                    produto=produto,
+                    quantidade=item.quantidade,
+                    total=total_item,
+                    status='aguardando',
+                )
+                pedidos_criados.append(pedido)
+
+            # Apaga os itens do carrinho após criar os pedidos
             itens.delete()
 
-            return redirect('pagamento_pix', pedido_id=pedido.id)
+            # Se quiser passar o primeiro pedido para a página pix
+            return redirect('pagamento_pix', pedido_id=pedidos_criados[0].id)
         
-        # Caso seja outro método, renderiza a tela de confirmação normal
+        # Para outros métodos de pagamento, renderize a confirmação normalmente
         return render(request, 'confirmacao.html', {'metodo': metodo})
     
     return render(request, 'home/pagamento.html')
 
 @login_required
 def finalizar_compra(request):
-    pedido = Pedido.objects.create(user=request.user, total=0)
     itens = ItemCarrinho.objects.filter(user=request.user)
 
-    total = 0
     for item in itens:
-        pedido.itens.add(item)
-        total += item.produto.preco * item.quantidade
+        Pedido.objects.create(
+            user=request.user,  # cliente
+            
+            produto=item.produto,
+            quantidade=item.quantidade,
+            total=item.produto.preco * item.quantidade,
+            status="aguardando"
+        )
 
-    pedido.total = total
-    pedido.save()
-    itens.delete()
+        # Cria notificação para o vendedor
+        NotificacaoUsuario.objects.create(
+            usuario=item.produto.vendedor,  # usuário que recebe a notificação
+            mensagem=f"Você recebeu um novo pedido para '{item.produto.nome}', quantidade: {item.quantidade}."
+        )
 
-    # Simulação de pagamento redirecionando para página com QR Code fake
-    return redirect('pagamento_pix', pedido_id=pedido.id)
+    itens.delete()  # limpa carrinho
 
+    messages.success(request, "Compra finalizada! O vendedor foi notificado.")
+    return redirect('pagina_confirmacao')
+
+@login_required
+def painel_vendedor(request):
+    pedidos = Pedido.objects.filter(vendedor=request.user).order_by('-data_criacao')
+
+    if request.method == "POST":
+        pedido_id = request.POST.get("pedido_id")
+        novo_status = request.POST.get("status")
+        pedido = Pedido.objects.get(id=pedido_id, vendedor=request.user)
+        pedido.status = novo_status
+        pedido.save()
+        messages.success(request, "Status do pedido atualizado!")
+
+    return render(request, 'home/painel_vendedor.html', {'pedidos': pedidos})
+
+@login_required
+def atualizar_status_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+
+    if request.method == 'POST':
+        novo_status = request.POST.get('status')
+        pedido.status = novo_status
+        pedido.save()
+
+        # Criar notificação para o comprador
+        NotificacaoUsuario.objects.create(
+            usuario=pedido.user,
+            mensagem=f"Seu pedido #{pedido.id} agora está: {pedido.get_status_display()}."
+        )
+
+        messages.success(request, 'Status do pedido atualizado com sucesso!')
+        return redirect('pedidos_vendedor')
+
+    return render(request, 'home/atualizar_status.html', {'pedido': pedido})
+
+@login_required
+def minhas_notificacoes(request):
+    notificacoes = request.user.notificacoes.order_by('-data_criacao')
+    return render(request, 'home/notificacoes.html', {'notificacoes': notificacoes})
+
+def notificacoes_nao_lidas(request):
+    if request.user.is_authenticated:
+        return {
+            'notificacoes_nao_lidas': NotificacaoUsuario.objects.filter(
+                usuario=request.user,
+                lida=False
+            ).count()
+        }
+    return {}
 
 @csrf_exempt
 @login_required
 def compra_finalizada(request):
     return render(request, 'home/compra_finalizada.html')
 
-
 @login_required
 def pagamento_pix(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id, user=request.user)
     return render(request, 'home/pagamento_pix.html', {'pedido': pedido})
-
 
 @login_required(login_url='login')
 def perfil_view(request):
@@ -199,7 +340,6 @@ def perfil_view(request):
     })
 
 
-
 @login_required
 def comentarios_site(request):
     if request.method == "POST":
@@ -210,6 +350,28 @@ def comentarios_site(request):
     
     comentarios = ComentarioSite.objects.all().order_by('-data_postagem')
     return render(request, 'home/comentarios_site.html', {'comentarios': comentarios})
+
+
+# def finalizar_compra(request):
+#     # Lógica para finalizar a compra...
+#     # Vamos supor que você tenha a lista de produtos comprados
+#     produtos_comprados = carrinho.get_produtos()  # seu método para buscar os produtos
+
+#     for produto in produtos_comprados:
+#         Notificacao.objects.create(
+#             vendedor=produto.vendedor,  # assumindo que seu modelo Produto tem um campo vendedor
+#             produto=produto,
+#             mensagem=f"O produto '{produto.nome}' foi vendido!"
+#         )
+
+#     # Limpa carrinho e redireciona
+#     carrinho.limpar()
+#     return redirect('pagina_sucesso')
+
+
+# def notificacoes_vendedor(request):
+#     notificacoes = Notificacao.objects.filter(vendedor=request.user).order_by('-data_criacao')
+#     return render(request, 'notificacoes.html', {'notificacoes': notificacoes})
 
 
 # ================ PAGINA INICIAL LOGIN =====================================================
@@ -293,13 +455,22 @@ def detalhe_produto(request, produto_id):
 def lista_produtos(request):
     produtos = Produto.objects.all()
     prod = request.GET.get("pesq")
+
     if prod:
         produtos = produtos.filter(nome__icontains=prod)
+
+    # Agrupar produtos por categoria
+    categorias = {}
+    for produto in produtos:
+        if produto.categoria not in categorias:
+            categorias[produto.categoria] = []
+        categorias[produto.categoria].append(produto)
+
     contexto = {
-        'produtos': produtos,
+        'categorias': categorias,  # envia agrupado
         'request': request
     }
-    return render(request, 'home/produtos.html', contexto) 
+    return render(request, 'home/produtos.html', contexto)
 # ============================================================================================
 
 
@@ -381,3 +552,4 @@ def processar_pagamento(request):
     
     return redirect('pagina_pagamento')
 # ============================================================================================
+
