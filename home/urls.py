@@ -22,5 +22,7 @@ urlpatterns = [
     path('perfil/', views.perfil_view, name='perfil'),
     path('meus-pedidos/', views.meus_pedidos, name='meus_pedidos'),
     path('sobre_nos', views.sobre_nos, name='sobre_nos'),
+    path("tornar-vendedor/", views.tornar_vendedor, name="tornar_vendedor"),
+    path("dashboard-vendedor/", views.dashboard_vendedor, name="dashboard_vendedor"),
 ]
                 

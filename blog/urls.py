@@ -22,7 +22,7 @@ urlpatterns = [
     path('produto/<int:produto_id>/oferta/', views.colocar_em_oferta, name='colocar_em_oferta'),
     path('efetuar_pagamento/', views.efetuar_pagamento, name='efetuar_pagamento'),
     path('historico_pagamentos/', views.historico_pagamentos, name='historico_pagamentos'),
-   
+    path('dashboard-vendedor/', views.dashboard_vendedor, name='dashboard_vendedor'),
     path('vendedor/pedidos/', views.pedidos_vendedor, name='pedidos_vendedor'),
     path('vendedor/pedidos/<int:pedido_id>/atualizar/', views.atualizar_status_pedido, name='atualizar_status_pedido'),
     

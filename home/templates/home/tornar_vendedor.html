@@ -1,0 +1,78 @@
+
+<style>
+    .seller-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .seller-container h2 {
+        text-align: center;
+        font-size: 1.8rem;
+        color: #222;
+        margin-bottom: 20px;
+    }
+
+    .seller-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .seller-container form p {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .seller-container label {
+        font-weight: 500;
+        margin-bottom: 6px;
+        color: #333;
+    }
+
+    .seller-container input, 
+    .seller-container textarea, 
+    .seller-container select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        transition: border 0.3s;
+    }
+
+    .seller-container input:focus,
+    .seller-container textarea:focus,
+    .seller-container select:focus {
+        border-color: #007bff;
+    }
+
+    .seller-container button {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: background 0.3s;
+    }
+
+    .seller-container button:hover {
+        background: #0056b3;
+    }
+</style>
+
+<div class="seller-container">
+    <h2>Se tornar Vendedor</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Ativar Conta de Vendedor</button>
+    </form>
+</div>
+

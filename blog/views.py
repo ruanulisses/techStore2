@@ -41,15 +41,17 @@ def atualizar_status_pedido(request, pedido_id):
 
 # ================ PAGINA HOME =====================================================
 def index(request):
-    produtos = Produto.objects.order_by("-id")
-    prod = request.GET.get("pesq")
-    if prod:
-        produtos = produtos.filter(nome__icontains=prod)
-    contexto = {
-        "nome": "Ruan",
+     # Pega todos os produtos do vendedor logado
+    produtos = Produto.objects.filter(vendedor=request.user).order_by('-data')
+    
+    # Pesquisa opcional
+    pesq = request.GET.get('pesq')
+    if pesq:
+        produtos = produtos.filter(nome__icontains=pesq)
+
+    return render(request, 'blog/dashboard_vendedor.html', {
         'produtos': produtos
-    }
-    return render(request, 'blog/index.html', contexto)
+    })
 
 def colocar_em_oferta(request, produto_id):
     produto = get_object_or_404(Produto, id=produto_id)
@@ -64,28 +66,55 @@ def produtos(request, prod_id):
     }
     return render(request, 'blog/postagem.html', contexto)
   
+@login_required
 def add_produtos(request):
+    if not request.user.perfil.tipo_usuario == "vendedor":
+        messages.error(request, "Você precisa ser vendedor para cadastrar produtos.")
+        return redirect('home')
+
     if request.method == "POST":
         nome = request.POST.get('nome').strip()
-        
         if len(nome) < 8:
             messages.error(request, "Nome muito curto!")
-            return redirect('add_produto')
+            return redirect('add_produtos')
 
         img = request.FILES.get("imagem")
         descricao = request.POST.get('descricao').strip()
-        preco = request.POST.get('preco').strip().replace(',', '.') 
-        preco_comprado = request.POST.get('preco_comprado').strip().replace(',', '.')
-        estoque = request.POST.get('estoque').strip()
+        preco = float(request.POST.get('preco').replace(',', '.'))
+        preco_comprado = float(request.POST.get('preco_comprado').replace(',', '.'))
+        estoque = int(request.POST.get('estoque'))
         categoria = request.POST.get('categoria').strip()
         
-        # Se todas as validações passarem, cria o produto
-        post = Produto(nome=nome, preco=float(preco), preco_comprado=float(preco_comprado), imagem=img, descricao=descricao, estoque=int(estoque), categoria=categoria)
+        # Cria o produto vinculado ao vendedor logado
+        Produto.objects.create(
+            vendedor=request.user,
+            nome=nome,
+            preco=preco,
+            preco_comprado=preco_comprado,
+            imagem=img,
+            descricao=descricao,
+            estoque=estoque,
+            categoria=categoria
+        )
+
         messages.success(request, "Produto salvo com sucesso!")
-        post.save()
-        return redirect('blog')
+        return redirect('dashboard_vendedor')  # redireciona para a view correta
         
     return render(request, 'blog/add_produto.html')
+
+def dashboard_vendedor(request):
+    # Pega todos os produtos do vendedor logado
+    produtos = Produto.objects.filter(vendedor=request.user).order_by('-data')
+    
+    # Pesquisa opcional
+    pesq = request.GET.get('pesq')
+    if pesq:
+        produtos = produtos.filter(nome__icontains=pesq)
+
+    return render(request, 'blog/dashboard_vendedor.html', {
+        'produtos': produtos
+    })
+
 
 def edit_produtos(request, prod_id):
     prod = get_object_or_404(Produto, id=prod_id)

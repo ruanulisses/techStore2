@@ -7,13 +7,23 @@ from django.utils import timezone
 
 
 class Perfil(models.Model):
+    TIPOS_USUARIO = (
+        ('cliente', 'Cliente'),
+        ('vendedor', 'Vendedor'),
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     foto = models.ImageField(upload_to='fotos_perfil/', blank=True, null=True)
-    telefone = models.CharField(max_length=20, blank=True)
-    endereco = models.TextField(blank=True)
+    telefone = models.CharField(max_length=20, blank=True, null=True)
+    endereco = models.CharField(max_length=255, blank=True, null=True)
+    tipo_usuario = models.CharField(max_length=20, choices=TIPOS_USUARIO, default='cliente')
 
-    def __str__(self):
-        return self.user.username
+    # Dados extras do vendedor
+    nome_loja = models.CharField(max_length=100, blank=True, null=True)
+    descricao_loja = models.TextField(blank=True, null=True)
+    documento = models.CharField(max_length=20, blank=True, null=True)  # CPF/CNPJ
+
+    
 
 
 class Carrinho(models.Model):

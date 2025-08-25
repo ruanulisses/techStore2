@@ -4,6 +4,6 @@ from django.contrib.auth.models import User
 from .models import Perfil
 
 @receiver(post_save, sender=User)
-def criar_perfil_usuario(sender, instance, created, **kwargs):
+def criar_perfil(sender, instance, created, **kwargs):
     if created:
-        Perfil.objects.create(user=instance)
+        Perfil.objects.create(user=instance)  # tipo_usuario usa default='cliente'

@@ -80,12 +80,21 @@
                 <img src=" {% static 'images/cart.png' %}" class="menu-icon" onclick="menutoggle()">
                 <div class="user-nav">
                     {% if user.is_authenticated %}
-                        <span class="user-greeting">Olá, <strong>{{ user.username }}</strong></span>
-                        <a href="{% url 'logout' %}" class="nav-link logout">Sair</a>
+                    <span class="user-greeting">
+                        Olá, <strong style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{ user.username }}</strong>
+                    </span>
+
+                    {% if user.perfil.tipo_usuario == "vendedor" %}
+                    <a href="{% url 'dashboard_vendedor' %}" class="nav-link">Página do Vendedor</a>
                     {% else %}
-                        <a href="{% url 'login' %}" class="nav-link">Entrar</a>
-                        <span class="separator">|</span>
-                        <a href="{% url 'cadastro' %}" class="nav-link">Cadastrar</a>
+                    <a href="{% url 'tornar_vendedor' %}" class="nav-link">Se tornar Vendedor</a>
+                    {% endif %}
+
+                    <a href="{% url 'logout' %}" class="nav-link logout">Sair</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">Entrar</a>
+                    <span class="separator">|</span>
+                    <a href="{% url 'cadastro' %}" class="nav-link">Cadastrar</a>
                     {% endif %}
                 </div>
             </div>

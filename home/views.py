@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import ComentarioSite,Perfil
-from .forms import ComentarioSiteForm
+from .forms import ComentarioSiteForm,VendedorForm
 
 
 
@@ -131,6 +131,35 @@ def cadastro_view(request):
             return redirect('cadastro')
 
     return render(request, 'home/login_cadastro.html')
+
+
+@login_required
+def tornar_vendedor(request):
+    perfil, _ = Perfil.objects.get_or_create(user=request.user)  # evita erro se não tiver Perfil
+    if request.method == 'POST':
+        form = VendedorForm(request.POST, request.FILES, instance=perfil)
+        if form.is_valid():
+            p = form.save(commit=False)
+            p.tipo_usuario = 'vendedor'
+            p.save()
+            return redirect('dashboard_vendedor')
+    else:
+        form = VendedorForm(instance=perfil)
+    return render(request, 'home/tornar_vendedor.html', {'form': form})
+
+def dashboard_vendedor(request):
+    # Filtra apenas os produtos do usuário logado
+    produtos = Produto.objects.filter(vendedor=request.user).order_by('-data')
+
+    # Pesquisa (opcional)
+    pesq = request.GET.get('pesq')
+    if pesq:
+        produtos = produtos.filter(nome__icontains=pesq)
+
+    return render(request, 'blog/inicio.html', {
+        'produtos': produtos
+    })
+
 
 def logout_view(request):
     logout(request)

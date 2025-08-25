@@ -35,15 +35,16 @@ class Comentario(models.Model):
     def __str__(self):
         return self.texto
     
-
+from django.contrib.auth.models import User
 
 class Produto(models.Model):
     """Aqui são armazenados os Produtos"""
+    vendedor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="produtos", null=True, blank=True)  # novo campo
     nome = models.CharField(max_length=100)
-    preco = models.DecimalField(max_digits=10, decimal_places=2)  # Aumentado para 10
-    preco_comprado = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Aumentado para 10
+    preco = models.DecimalField(max_digits=10, decimal_places=2)
+    preco_comprado = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     imagem = models.ImageField(upload_to="images/", blank=True, null=True)
-    descricao = models.TextField(max_length=500, blank=True, null=True)  # Aumentado para 500
+    descricao = models.TextField(max_length=500, blank=True, null=True)
     estoque = models.IntegerField(default=0)
     data = models.DateTimeField(auto_now_add=True)
     em_oferta = models.BooleanField(default=False)
@@ -51,7 +52,7 @@ class Produto(models.Model):
 
     def preco_com_desconto(self):
         if self.em_oferta:
-            return self.preco * Decimal('0.8')  # Aplica 20% de desconto
+            return self.preco * Decimal('0.8')
         return self.preco
     
     class Meta:

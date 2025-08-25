@@ -62,3 +62,10 @@ class ComentarioSiteForm(forms.ModelForm):
             'comentario': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Escreva seu comentário'}),
             'nota': forms.NumberInput(attrs={'min': 0, 'max': 5, 'step': 0.5}),
         }
+
+
+
+class VendedorForm(forms.ModelForm):
+    class Meta:
+        model = Perfil
+        fields = ['documento', 'foto', 'endereco', 'telefone']

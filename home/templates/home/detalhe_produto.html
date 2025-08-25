@@ -201,7 +201,7 @@
 
     <div class="row">
         <div class="col-2">
-            <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+            <img height="600px" src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
         </div>
         <div class="col-2">
             <h1>{{ produto.nome }}</h1>
@@ -220,6 +220,7 @@
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star-half-stroke"></i>
             </div>
+            <p>{{ produto.descricao }}</p>
             <p>Este é um excelente produto da Inova Tech. Qualidade, inovação e ótimo custo-benefício.</p>
             <a href="#" class="btn" onclick="adicionarAoCarrinho({{ produto.id }})">Adicionar ao Carrinho</a>
             <div id="mensagem-sucesso" style="display:none; color: green; margin-top: 10px;"></div>

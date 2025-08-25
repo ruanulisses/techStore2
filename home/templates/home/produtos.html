@@ -104,7 +104,7 @@
             </div>
             <nav>
                 <ul id="menuItems">
-                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'home' %}">Home</a></li>
                     <li><a href="{% url 'produtos' %}">Produtos</a></li>
                     <li><a href="{% url 'sobre_nos'  %}">Sobre</a></li>
                     <li><a href="{% url 'carrinho' %}">Carrinho</a></li>
@@ -124,15 +124,24 @@
             <img src="{% static 'images/cart.png' %}">
             <img src="{% static 'images/cart.png' %}" class="menu-icon" onclick="menutoggle()">
             <div class="user-nav">
-                {% if user.is_authenticated %}
-                <span style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif" class="user-greeting">Olá, <strong style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;" >{{ user.username }}</strong></span>
-                <a href="{% url 'logout' %}" class="nav-link logout">Sair</a>
-                {% else %}
-                <a href="{% url 'login' %}" class="nav-link">Entrar</a>
-                <span class="separator">|</span>
-                <a href="{% url 'cadastro' %}" class="nav-link">Cadastrar</a>
-                {% endif %}
-            </div>
+                    {% if user.is_authenticated %}
+                    <span class="user-greeting">
+                        Olá, <strong>{{ user.username }}</strong>
+                    </span>
+
+                    {% if user.perfil.tipo_usuario == "vendedor" %}
+                    <a href="{% url 'dashboard_vendedor' %}" class="nav-link">Página do Vendedor</a>
+                    {% else %}
+                    <a href="{% url 'tornar_vendedor' %}" class="nav-link">Se tornar Vendedor</a>
+                    {% endif %}
+
+                    <a href="{% url 'logout' %}" class="nav-link logout">Sair</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">Entrar</a>
+                    <span class="separator">|</span>
+                    <a href="{% url 'cadastro' %}" class="nav-link">Cadastrar</a>
+                    {% endif %}
+                </div>
         </div>
     </div>
 
@@ -294,7 +303,11 @@
         <div class="produto-card">
             <div class="produto-imagem-container" style="position: relative;">
                 <a href="{% url 'detalhe_produto' produto.id %}">
+                    {% if produto.imagem %}
                     <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="produto-img">
+                    {% else %}
+                        <img src="{% static 'images/sem-imagem.png' %}" alt="Sem imagem" class="produto-img">
+                    {% endif %}
                     {% if produto.em_oferta %}
                         <span class="badge-oferta">Oferta</span>
                     {% endif %}
